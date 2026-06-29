@@ -437,6 +437,11 @@
     overflow:hidden;
     position:relative;
   }
+  .gallery-item.has-photo{
+    border: none;
+    border-radius:6px;
+    box-shadow: 0 8px 20px rgba(34,29,24,0.18);
+  }
   .gallery-item img{
     width:100%; height:100%;
     object-fit:cover;
@@ -564,7 +569,7 @@
     <!--
       CARA MENAMBAHKAN FOTO ASLI:
       Ganti setiap <div class="gallery-item">...</div> di bawah dengan:
-      <div class="gallery-item"><img src="assets/kimono1.jpg" alt="Kimono Mika 1"></div>
+      <div class="gallery-item has-photo"><img src="assets/kimono1.jpg" alt="Kimono Mika 1"></div>
       Upload file foto ke folder assets/ pada repo GitHub yang sama dengan index.html.
       Setiap track berisi 2 set foto yang sama (duplikat) agar animasi loop terlihat mulus —
       kalau menambah/mengurangi jumlah foto, pastikan kedua set tetap identik dan berurutan sama.
@@ -579,15 +584,19 @@
       </div>
       <div class="marquee-wrap">
         <div class="marquee-track" id="trackKimono">
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono1.jpg" alt="Kimono Mika 1"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono2.jpg" alt="Kimono Mika 2"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono3.jpg" alt="Kimono Mika 3"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono4.jpg" alt="Kimono Mika 4"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono5.jpg" alt="Kimono Mika 5"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono6.jpg" alt="Kimono Mika 6"></div>
           <!-- duplikat set di atas, jangan dihapus — dibutuhkan untuk loop mulus -->
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
-          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono1.jpg" alt="Kimono Mika 1"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono2.jpg" alt="Kimono Mika 2"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono3.jpg" alt="Kimono Mika 3"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono4.jpg" alt="Kimono Mika 4"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono5.jpg" alt="Kimono Mika 5"></div>
+          <div class="gallery-item has-photo"><img src="assets/kimono6.jpg" alt="Kimono Mika 6"></div>
         </div>
       </div>
     </div>
