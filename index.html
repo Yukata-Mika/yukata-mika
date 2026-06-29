@@ -317,6 +317,117 @@
     color:#544c42;
   }
 
+  /* ---- CATALOG (semua foto, grid) ---- */
+  .catalog-filters{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    border: 1.5px solid var(--line);
+    background: var(--ivory);
+    color: var(--ink);
+    padding: 9px 22px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    cursor:pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn.active{
+    background: var(--indigo);
+    color: var(--ivory);
+    border-color: var(--indigo);
+  }
+  .catalog-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:14px;
+  }
+  .catalog-item{
+    aspect-ratio: 3/4;
+    border-radius:6px;
+    overflow:hidden;
+    cursor:pointer;
+    position:relative;
+    box-shadow: 0 6px 16px rgba(34,29,24,0.14);
+    transition: transform 0.25s;
+  }
+  .catalog-item:hover{ transform: translateY(-3px); }
+  .catalog-item img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .catalog-item .cat-tag{
+    position:absolute;
+    top:8px; left:8px;
+    font-size:10px;
+    letter-spacing:1px;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:4px 10px;
+    border-radius:12px;
+    color: var(--ivory);
+  }
+  .catalog-item.kimono .cat-tag{ background: rgba(29,52,80,0.85); }
+  .catalog-item.yukata .cat-tag{ background: rgba(168,57,43,0.85); }
+  .catalog-item.placeholder{
+    background: var(--ivory-deep);
+    border: 1.5px dashed var(--gold);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:#8a7d63;
+    cursor:default;
+    box-shadow:none;
+  }
+  .catalog-item.placeholder:hover{ transform:none; }
+  .catalog-item.placeholder .ph-icon{
+    font-family:'Zen Old Mincho', serif;
+    font-size:24px;
+    color: var(--gold);
+  }
+  .catalog-item.placeholder .ph-text{ font-size:11px; }
+
+  @media (max-width: 760px){
+    .catalog-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background: rgba(15,12,8,0.92);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:30px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox img{
+    max-width:90vw;
+    max-height:85vh;
+    border-radius:4px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:22px; right:28px;
+    font-size:30px;
+    color: var(--ivory);
+    background:none;
+    border:none;
+    cursor:pointer;
+    line-height:1;
+  }
+
   /* ---- CONTACT / FOOTER ---- */
   .contact-section{
     background: var(--indigo-deep);
@@ -626,6 +737,49 @@
 
   <div class="obi-divider"></div>
 
+  <section id="katalog">
+    <div class="section-head">
+      <div class="section-eyebrow" data-id>Lihat Semua</div>
+      <div class="section-eyebrow" data-en>See All</div>
+      <h2 class="serif" data-id>Katalog Foto</h2>
+      <h2 class="serif" data-en>Photo Catalog</h2>
+    </div>
+
+    <div class="catalog-filters">
+      <button class="filter-btn active" data-filter="all"><span data-id>Semua</span><span data-en>All</span></button>
+      <button class="filter-btn" data-filter="kimono">Kimono</button>
+      <button class="filter-btn" data-filter="yukata">Yukata</button>
+    </div>
+
+    <!--
+      CARA MENAMBAHKAN FOTO BARU KE KATALOG:
+      Tambahkan baris baru di bawah, format:
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="namafile.jpg" alt="..."></div>
+      Ganti class "kimono" jadi "yukata" untuk foto yukata.
+      Upload file foto langsung sejajar dengan index.html (tanpa folder).
+    -->
+    <div class="catalog-grid" id="catalogGrid">
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono1.jpg" alt="Kimono Mika 1"></div>
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono2.jpg" alt="Kimono Mika 2"></div>
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono3.jpg" alt="Kimono Mika 3"></div>
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono4.jpg" alt="Kimono Mika 4"></div>
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono5.jpg" alt="Kimono Mika 5"></div>
+      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono6.jpg" alt="Kimono Mika 6"></div>
+      <div class="catalog-item placeholder">
+        <div class="ph-icon">和</div>
+        <div class="ph-text" data-id>Foto yukata segera hadir</div>
+        <div class="ph-text" data-en>Yukata photos coming soon</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <div class="obi-divider"></div>
+
   <div class="contact-section">
     <div class="section-head">
       <div class="section-eyebrow" data-id>Hubungi Kami</div>
@@ -674,6 +828,42 @@
 
   btnId.addEventListener('click', () => setLang('id'));
   btnEn.addEventListener('click', () => setLang('en'));
+
+  // --- Katalog: filter Kimono/Yukata ---
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const catalogItems = document.querySelectorAll('.catalog-item:not(.placeholder)');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      catalogItems.forEach(item => {
+        const show = filter === 'all' || item.classList.contains(filter);
+        item.style.display = show ? '' : 'none';
+      });
+      // placeholder kategori (foto belum ada) ikut filter juga
+      document.querySelectorAll('.catalog-item.placeholder').forEach(ph => {
+        ph.style.display = (filter === 'all' || filter === 'yukata') ? '' : 'none';
+      });
+    });
+  });
+
+  // --- Lightbox: klik foto untuk perbesar ---
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.catalog-item:not(.placeholder) img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+    });
+  });
+  function closeLightbox(){ lightbox.classList.remove('open'); lightboxImg.src=''; }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 </body>
 </html>
