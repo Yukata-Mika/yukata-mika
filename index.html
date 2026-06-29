@@ -282,7 +282,7 @@
   /* ---- INFO GRID ---- */
   .info-grid{
     display:grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap:1px;
     background: var(--line);
     border:1px solid var(--line);
@@ -363,13 +363,65 @@
     border-top: 1px solid rgba(246,241,230,0.1);
   }
 
-  /* ---- GALLERY ---- */
-  .gallery-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap:14px;
+  /* ---- GALLERY (marquee / foto berjalan) ---- */
+  .gallery-sub{
+    margin-bottom: 56px;
   }
+  .gallery-sub:last-child{ margin-bottom:0; }
+  .gallery-sub-label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+    padding: 0 4px;
+  }
+  .gallery-sub-label .tag{
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-weight:700;
+    padding: 5px 14px;
+    border-radius:20px;
+    color: var(--ivory);
+  }
+  .gallery-sub-label.kimono .tag{ background: var(--indigo); }
+  .gallery-sub-label.yukata .tag{ background: var(--vermillion); }
+  .gallery-sub-label h3{
+    font-family:'Cormorant Garamond', serif;
+    font-size:24px;
+    font-weight:600;
+    color: var(--indigo-deep);
+  }
+  .gallery-sub-label .line{
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+
+  .marquee-wrap{
+    overflow:hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .marquee-track{
+    display:flex;
+    gap:14px;
+    width: max-content;
+    animation: marquee-scroll 32s linear infinite;
+  }
+  .marquee-wrap:hover .marquee-track{ animation-play-state: paused; }
+  .marquee-track.reverse{ animation-direction: reverse; }
+  @keyframes marquee-scroll{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track{ animation: none; }
+  }
+
   .gallery-item{
+    flex: 0 0 auto;
+    width: 220px;
     aspect-ratio: 3/4;
     background: var(--ivory-deep);
     border: 1.5px dashed var(--gold);
@@ -401,7 +453,7 @@
     letter-spacing:0.5px;
   }
   @media (max-width: 760px){
-    .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+    .gallery-item{ width:160px; }
   }
 
   /* ---- MAP / ADDRESS ---- */
@@ -427,9 +479,8 @@
     <div class="hero-kanji left">着物</div>
     <div class="hero-kanji right">浴衣</div>
     <div class="hero-content">
-      <div class="seal"><img src="assets/logo.jpg" alt="Yukata Mika Studio Logo"></div>
-      <div class="eyebrow" data-id>Studio Sewa Kimono &amp; Yukata</div>
-      <div class="eyebrow" data-en>Kimono &amp; Yukata Rental Studio</div>
+      <div class="eyebrow" data-id>Sewa Kimono &amp; Yukata</div>
+      <div class="eyebrow" data-en>Kimono &amp; Yukata Rental</div>
       <h1 class="serif">Yukata Mika <em>Studio</em></h1>
       <p class="tagline" data-id>Kimono dan yukata otentik Jepang, untuk momen istimewamu di Semarang.</p>
       <p class="tagline" data-en>Authentic Japanese kimono and yukata, for your special moments in Semarang.</p>
@@ -497,13 +548,6 @@
         <p data-id>Wajib reservasi terlebih dahulu melalui WhatsApp</p>
         <p data-en>Reservation required via WhatsApp in advance</p>
       </div>
-      <div class="info-item">
-        <div class="info-icon">語</div>
-        <h4 data-id>Bahasa</h4>
-        <h4 data-en>Language</h4>
-        <p data-id>Layanan dalam Bahasa Indonesia &amp; English</p>
-        <p data-en>Service available in Indonesian &amp; English</p>
-      </div>
     </div>
   </section>
 
@@ -516,42 +560,57 @@
       <h2 class="serif" data-id>Koleksi Kimono &amp; Yukata</h2>
       <h2 class="serif" data-en>Kimono &amp; Yukata Collection</h2>
     </div>
-    <div class="gallery-grid">
-      <!--
-        CARA MENAMBAHKAN FOTO ASLI:
-        Ganti setiap <div class="gallery-item">...</div> di bawah dengan:
-        <div class="gallery-item"><img src="assets/foto1.jpg" alt="Kimono Mika 1"></div>
-        Upload file foto ke folder assets/ pada repo GitHub yang sama dengan index.html.
-      -->
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
+
+    <!--
+      CARA MENAMBAHKAN FOTO ASLI:
+      Ganti setiap <div class="gallery-item">...</div> di bawah dengan:
+      <div class="gallery-item"><img src="assets/kimono1.jpg" alt="Kimono Mika 1"></div>
+      Upload file foto ke folder assets/ pada repo GitHub yang sama dengan index.html.
+      Setiap track berisi 2 set foto yang sama (duplikat) agar animasi loop terlihat mulus —
+      kalau menambah/mengurangi jumlah foto, pastikan kedua set tetap identik dan berurutan sama.
+    -->
+
+    <div class="gallery-sub">
+      <div class="gallery-sub-label kimono">
+        <span class="tag">Kimono</span>
+        <h3 class="serif" data-id>Galeri Kimono</h3>
+        <h3 class="serif" data-en>Kimono Gallery</h3>
+        <div class="line"></div>
       </div>
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
+      <div class="marquee-wrap">
+        <div class="marquee-track" id="trackKimono">
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <!-- duplikat set di atas, jangan dihapus — dibutuhkan untuk loop mulus -->
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+        </div>
       </div>
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
+    </div>
+
+    <div class="gallery-sub">
+      <div class="gallery-sub-label yukata">
+        <span class="tag">Yukata</span>
+        <h3 class="serif" data-id>Galeri Yukata</h3>
+        <h3 class="serif" data-en>Yukata Gallery</h3>
+        <div class="line"></div>
       </div>
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
-      </div>
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
-      </div>
-      <div class="gallery-item">
-        <div class="ph-icon">和</div>
-        <div class="ph-text" data-id>Foto segera hadir</div>
-        <div class="ph-text" data-en>Photo coming soon</div>
+      <div class="marquee-wrap">
+        <div class="marquee-track reverse" id="trackYukata">
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <!-- duplikat set di atas, jangan dihapus — dibutuhkan untuk loop mulus -->
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+          <div class="gallery-item"><div class="ph-icon">和</div><div class="ph-text" data-id>Foto segera hadir</div><div class="ph-text" data-en>Photo coming soon</div></div>
+        </div>
       </div>
     </div>
   </section>
