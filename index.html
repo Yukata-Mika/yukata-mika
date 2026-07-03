@@ -317,7 +317,102 @@
     color:#544c42;
   }
 
-  /* ---- CATALOG (semua foto, grid) ---- */
+  /* ---- VIDEO GUIDE ---- */
+  .video-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:22px;
+  }
+  @media (max-width: 760px){
+    .video-grid{ grid-template-columns: 1fr; }
+  }
+  .video-card{
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
+    background: var(--indigo-deep);
+    box-shadow: 0 10px 28px rgba(34,29,24,0.22);
+    cursor:pointer;
+    text-decoration:none;
+    display:block;
+    transition: transform 0.28s, box-shadow 0.28s;
+  }
+  .video-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px rgba(34,29,24,0.32);
+  }
+  .video-thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16/9;
+    overflow:hidden;
+  }
+  .video-thumb img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    transition: transform 0.4s;
+    filter: brightness(0.82);
+  }
+  .video-card:hover .video-thumb img{
+    transform: scale(1.05);
+    filter: brightness(0.7);
+  }
+  .video-play{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .video-play-btn{
+    width:58px; height:58px;
+    background: rgba(255,255,255,0.92);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .video-card:hover .video-play-btn{
+    transform: scale(1.12);
+    background: white;
+  }
+  .video-play-btn svg{
+    width:22px; height:22px;
+    fill: var(--vermillion);
+    margin-left:4px;
+  }
+  .video-num{
+    position:absolute;
+    top:12px; left:14px;
+    font-size:11px;
+    letter-spacing:2px;
+    font-weight:700;
+    text-transform:uppercase;
+    color: white;
+    background: rgba(168,57,43,0.85);
+    padding: 4px 10px;
+    border-radius:20px;
+  }
+  .video-info{
+    padding: 16px 18px 18px;
+  }
+  .video-info h4{
+    font-family:'Cormorant Garamond', serif;
+    font-size:20px;
+    font-weight:600;
+    color: var(--ivory);
+    margin-bottom:4px;
+  }
+  .video-info p{
+    font-size:12px;
+    color: rgba(246,241,230,0.55);
+    letter-spacing:0.5px;
+  }
+
+  /* ---- CATALOG ---- */
   .catalog-filters{
     display:flex;
     justify-content:center;
@@ -607,6 +702,12 @@
         <a href="#paket" class="btn btn-outline">
           <span data-id>Lihat Paket</span><span data-en>View Packages</span>
         </a>
+        <a href="#panduan" class="btn btn-outline">
+          <span data-id>▶ Video Tutorial</span><span data-en>▶ Video Tutorial</span>
+        </a>
+        <a href="#katalog" class="btn btn-outline">
+          <span data-id>Katalog Foto</span><span data-en>Photo Catalog</span>
+        </a>
       </div>
     </div>
   </section>
@@ -802,6 +903,89 @@
           <div class="gallery-item has-photo"><img src="yukata18.jpeg" alt="Yukata Mika 18"></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <div class="obi-divider"></div>
+
+  <section id="panduan">
+    <div class="section-head">
+      <div class="section-eyebrow" data-id>Panduan Pemakaian</div>
+      <div class="section-eyebrow" data-en>How to Wear</div>
+      <h2 class="serif" data-id>Tutorial Video</h2>
+      <h2 class="serif" data-en>Video Tutorial</h2>
+    </div>
+
+    <div class="video-grid">
+
+      <a class="video-card" href="https://youtu.be/PJXeHtg9ZIo" target="_blank" rel="noopener">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/PJXeHtg9ZIo/hqdefault.jpg" alt="Pemakaian Yukata">
+          <div class="video-play">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-num">01</div>
+        </div>
+        <div class="video-info">
+          <h4 data-id>Pemakaian Yukata</h4>
+          <h4 data-en>How to Wear Yukata</h4>
+          <p>YouTube · Yukata Mika</p>
+        </div>
+      </a>
+
+      <a class="video-card" href="https://youtu.be/HflcC2tztPc" target="_blank" rel="noopener">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/HflcC2tztPc/hqdefault.jpg" alt="Pemakaian Obi">
+          <div class="video-play">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-num">02</div>
+        </div>
+        <div class="video-info">
+          <h4 data-id>Pemakaian Obi</h4>
+          <h4 data-en>How to Tie Obi</h4>
+          <p>YouTube · Yukata Mika</p>
+        </div>
+      </a>
+
+      <a class="video-card" href="https://youtu.be/lD1A1JE2iDE" target="_blank" rel="noopener">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/lD1A1JE2iDE/hqdefault.jpg" alt="Pemakaian Kimono Formal">
+          <div class="video-play">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-num">03</div>
+        </div>
+        <div class="video-info">
+          <h4 data-id>Pemakaian Kimono Formal</h4>
+          <h4 data-en>How to Wear Formal Kimono</h4>
+          <p>YouTube · Yukata Mika</p>
+        </div>
+      </a>
+
+      <a class="video-card" href="https://youtu.be/xU-SxteQr7g" target="_blank" rel="noopener">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/xU-SxteQr7g/hqdefault.jpg" alt="Pemakaian Kimono Pria">
+          <div class="video-play">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-num">04</div>
+        </div>
+        <div class="video-info">
+          <h4 data-id>Kimono Pria</h4>
+          <h4 data-en>Men's Kimono</h4>
+          <p>YouTube · Yukata Mika</p>
+        </div>
+      </a>
+
     </div>
   </section>
 
