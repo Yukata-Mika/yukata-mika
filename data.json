@@ -1,6 +1,14 @@
 {
  "photos": [
   {
+   "src": "foto/yukata-mwgpf7n2-2.jpg",
+   "cat": "yukata"
+  },
+  {
+   "src": "foto/kimono-mwgpecip-1.jpg",
+   "cat": "kimono"
+  },
+  {
    "src": "kimono1.jpg",
    "cat": "kimono"
   },
