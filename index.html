@@ -1,1157 +1,259 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/jpeg" href="logo.jpg">
-<title>Yukata Mika Studio — Sewa Kimono &amp; Yukata Semarang</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Simulasi JLPT</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@500;600&display=swap');
-
-  :root{
-    --ivory: #f6f1e6;
-    --ivory-deep: #efe7d6;
-    --ink: #221d18;
-    --indigo: #1d3450;
-    --indigo-deep: #15263b;
-    --gold: #b8902f;
-    --gold-light: #d6b563;
-    --vermillion: #a8392b;
-    --line: rgba(34,29,24,0.14);
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{ scroll-behavior:smooth; }
-  body{
-    background: var(--ivory);
-    color: var(--ink);
-    font-family: 'Noto Sans JP', sans-serif;
-    line-height:1.6;
-    overflow-x:hidden;
-  }
-  .serif{ font-family:'Cormorant Garamond', serif; }
-  .mincho{ font-family:'Zen Old Mincho', serif; }
-
-  /* fabric texture overlay */
-  body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:1;
-    background-image:
-      repeating-linear-gradient(45deg, rgba(34,29,24,0.025) 0px, rgba(34,29,24,0.025) 1px, transparent 1px, transparent 14px);
-    opacity:0.6;
-  }
-
-  /* ---- LANG TOGGLE ---- */
-  .lang-toggle{
-    position:fixed;
-    top:18px;
-    right:18px;
-    z-index:50;
-    display:flex;
-    background: rgba(246,241,230,0.9);
-    backdrop-filter: blur(6px);
-    border:1px solid var(--line);
-    border-radius:30px;
-    padding:4px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  }
-  .lang-btn{
-    border:none;
-    background:transparent;
-    padding:6px 16px;
-    font-size:12px;
-    letter-spacing:1px;
-    font-weight:700;
-    border-radius:24px;
-    cursor:pointer;
-    color: var(--ink);
-    opacity:0.5;
-    transition: all 0.25s;
-  }
-  .lang-btn.active{
-    background: var(--indigo);
-    color: var(--ivory);
-    opacity:1;
-  }
-
-  [data-en]{ display:none; }
-  body.lang-en [data-id]{ display:none; }
-  body.lang-en [data-en]{ display:inline; }
-  body.lang-en [data-en-block]{ display:block; }
-  body.lang-id [data-en-block]{ display:none; }
-
-  /* ---- HERO ---- */
-  .hero{
-    position:relative;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 100px 24px 80px;
-    background: var(--indigo);
-    color: var(--ivory);
-    overflow:hidden;
-    text-align:center;
-  }
-  .hero::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 18% 20%, rgba(216,181,99,0.16), transparent 45%),
-      radial-gradient(circle at 85% 80%, rgba(216,181,99,0.10), transparent 50%);
-  }
-  .hero-kanji{
-    position:absolute;
-    top:0; bottom:0;
-    writing-mode: vertical-rl;
-    font-family:'Zen Old Mincho', serif;
-    font-size: clamp(40px, 7vw, 80px);
-    color: rgba(246,241,230,0.06);
-    letter-spacing: 18px;
-    pointer-events:none;
-    user-select:none;
-  }
-  .hero-kanji.left{ left:2%; }
-  .hero-kanji.right{ right:2%; }
-  .hero-content{ position:relative; z-index:2; max-width:760px; }
-  .eyebrow{
-    font-size:12px;
-    letter-spacing:4px;
-    text-transform:uppercase;
-    color: var(--gold-light);
-    margin-bottom:22px;
-    font-weight:600;
-  }
-  .hero h1{
-    font-size: clamp(46px, 9vw, 96px);
-    font-weight:600;
-    letter-spacing:0.5px;
-    line-height:1.05;
-    margin-bottom:18px;
-  }
-  .hero h1 em{
-    font-style:italic;
-    color: var(--gold-light);
-  }
-  .hero p.tagline{
-    font-size: clamp(16px, 2.2vw, 20px);
-    color: rgba(246,241,230,0.82);
-    max-width:460px;
-    margin: 0 auto 36px;
-    font-family:'Noto Sans JP', sans-serif;
-    font-weight:400;
-  }
-  .seal{
-    width:96px; height:96px;
-    margin: 0 auto 30px;
-    border-radius:50%;
-    overflow:hidden;
-    box-shadow: 0 0 0 3px rgba(214,181,99,0.55), 0 8px 24px rgba(0,0,0,0.35);
-  }
-  .seal img{
-    width:100%; height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .cta-row{
-    display:flex;
-    gap:14px;
-    justify-content:center;
-    flex-wrap:wrap;
-  }
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding: 15px 30px;
-    border-radius:2px;
-    font-size:14px;
-    letter-spacing:1px;
-    font-weight:700;
-    text-decoration:none;
-    transition: all 0.25s;
-    border: 1px solid transparent;
-  }
-  .btn-gold{
-    background: var(--gold-light);
-    color: var(--indigo-deep);
-  }
-  .btn-gold:hover{ background: #e6cb86; }
-  .btn-outline{
-    border-color: rgba(246,241,230,0.4);
-    color: var(--ivory);
-  }
-  .btn-outline:hover{ border-color: var(--gold-light); color: var(--gold-light); }
-
-  /* ---- OBI DIVIDER ---- */
-  .obi-divider{
-    height:14px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--gold) 0px, var(--gold) 28px,
-      var(--vermillion) 28px, var(--vermillion) 30px,
-      var(--gold) 30px, var(--gold) 58px,
-      var(--ivory-deep) 58px, var(--ivory-deep) 60px
-    );
-  }
-
-  /* ---- SECTION SHARED ---- */
-  section{
-    padding: 90px 24px;
-    max-width: 1040px;
-    margin: 0 auto;
-    position:relative;
-    z-index:2;
-  }
-  .section-head{
-    text-align:center;
-    margin-bottom:56px;
-  }
-  .section-eyebrow{
-    font-size:12px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    color: var(--vermillion);
-    font-weight:700;
-    margin-bottom:10px;
-  }
-  .section-head h2{
-    font-size: clamp(32px, 5vw, 46px);
-    font-weight:600;
-    color: var(--indigo-deep);
-  }
-
-  /* ---- PACKAGES ---- */
-  .packages{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:28px;
-  }
-  .pkg-card{
-    background: var(--ivory-deep);
-    border: 1px solid var(--line);
-    padding: 44px 36px;
-    position:relative;
-    transition: transform 0.3s;
-  }
-  .pkg-card:hover{ transform: translateY(-4px); }
-  .pkg-card::before{
-    content:"";
-    position:absolute;
-    top:0; left:0;
-    width:100%;
-    height:5px;
-    background: var(--indigo);
-  }
-  .pkg-card.yukata::before{ background: var(--vermillion); }
-  .pkg-label{
-    font-size:11px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color: var(--gold);
-    font-weight:700;
-    margin-bottom:8px;
-  }
-  .pkg-card h3{
-    font-family:'Cormorant Garamond', serif;
-    font-size:34px;
-    font-weight:600;
-    margin-bottom:18px;
-    color: var(--indigo-deep);
-  }
-  .pkg-price{
-    font-size: 38px;
-    font-weight:700;
-    color: var(--ink);
-    margin-bottom:6px;
-  }
-  .pkg-price span{
-    font-size:14px;
-    font-weight:400;
-    color: #6b6258;
-  }
-  .pkg-desc{
-    font-size:14px;
-    color:#544c42;
-    margin-top:14px;
-  }
-
-  /* ---- INFO GRID ---- */
-  .info-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:1px;
-    background: var(--line);
-    border:1px solid var(--line);
-  }
-  .info-item{
-    background: var(--ivory);
-    padding: 36px 28px;
-    text-align:center;
-  }
-  .info-icon{
-    font-family:'Zen Old Mincho', serif;
-    font-size:22px;
-    color: var(--vermillion);
-    border: 1.5px solid var(--vermillion);
-    width:50px; height:50px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin: 0 auto 18px;
-  }
-  .info-item h4{
-    font-size:13px;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    color: var(--indigo-deep);
-    margin-bottom:10px;
-    font-weight:700;
-  }
-  .info-item p{
-    font-size:14px;
-    color:#544c42;
-  }
-
-  /* ---- VIDEO GUIDE ---- */
-  .video-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:22px;
-  }
-  @media (max-width: 760px){
-    .video-grid{ grid-template-columns: 1fr; }
-  }
-  .video-card{
-    position:relative;
-    border-radius:14px;
-    overflow:hidden;
-    background: var(--indigo-deep);
-    box-shadow: 0 10px 28px rgba(34,29,24,0.22);
-    cursor:pointer;
-    text-decoration:none;
-    display:block;
-    transition: transform 0.28s, box-shadow 0.28s;
-  }
-  .video-card:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 18px 36px rgba(34,29,24,0.32);
-  }
-  .video-thumb{
-    position:relative;
-    width:100%;
-    aspect-ratio: 16/9;
-    overflow:hidden;
-  }
-  .video-thumb img{
-    width:100%; height:100%;
-    object-fit:cover;
-    display:block;
-    transition: transform 0.4s;
-    filter: brightness(0.82);
-  }
-  .video-card:hover .video-thumb img{
-    transform: scale(1.05);
-    filter: brightness(0.7);
-  }
-  .video-play{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .video-play-btn{
-    width:58px; height:58px;
-    background: rgba(255,255,255,0.92);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-    transition: transform 0.2s, background 0.2s;
-  }
-  .video-card:hover .video-play-btn{
-    transform: scale(1.12);
-    background: white;
-  }
-  .video-play-btn svg{
-    width:22px; height:22px;
-    fill: var(--vermillion);
-    margin-left:4px;
-  }
-  .video-num{
-    position:absolute;
-    top:12px; left:14px;
-    font-size:11px;
-    letter-spacing:2px;
-    font-weight:700;
-    text-transform:uppercase;
-    color: white;
-    background: rgba(168,57,43,0.85);
-    padding: 4px 10px;
-    border-radius:20px;
-  }
-  .video-info{
-    padding: 16px 18px 18px;
-  }
-  .video-info h4{
-    font-family:'Cormorant Garamond', serif;
-    font-size:20px;
-    font-weight:600;
-    color: var(--ivory);
-    margin-bottom:4px;
-  }
-  .video-info p{
-    font-size:12px;
-    color: rgba(246,241,230,0.55);
-    letter-spacing:0.5px;
-  }
-
-  /* ---- CATALOG ---- */
-  .catalog-filters{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:36px;
-    flex-wrap:wrap;
-  }
-  .filter-btn{
-    border: 1.5px solid var(--line);
-    background: var(--ivory);
-    color: var(--ink);
-    padding: 9px 22px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:0.5px;
-    cursor:pointer;
-    transition: all 0.2s;
-  }
-  .filter-btn.active{
-    background: var(--indigo);
-    color: var(--ivory);
-    border-color: var(--indigo);
-  }
-  .catalog-grid{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap:14px;
-  }
-  .catalog-item{
-    aspect-ratio: 3/4;
-    border-radius:6px;
-    overflow:hidden;
-    cursor:pointer;
-    position:relative;
-    box-shadow: 0 6px 16px rgba(34,29,24,0.14);
-    transition: transform 0.25s;
-  }
-  .catalog-item:hover{ transform: translateY(-3px); }
-  .catalog-item img{
-    width:100%; height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .catalog-item .cat-tag{
-    position:absolute;
-    top:8px; left:8px;
-    font-size:10px;
-    letter-spacing:1px;
-    font-weight:700;
-    text-transform:uppercase;
-    padding:4px 10px;
-    border-radius:12px;
-    color: var(--ivory);
-  }
-  .catalog-item.kimono .cat-tag{ background: rgba(29,52,80,0.85); }
-  .catalog-item.yukata .cat-tag{ background: rgba(168,57,43,0.85); }
-  .catalog-item.placeholder{
-    background: var(--ivory-deep);
-    border: 1.5px dashed var(--gold);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    color:#8a7d63;
-    cursor:default;
-    box-shadow:none;
-  }
-  .catalog-item.placeholder:hover{ transform:none; }
-  .catalog-item.placeholder .ph-icon{
-    font-family:'Zen Old Mincho', serif;
-    font-size:24px;
-    color: var(--gold);
-  }
-  .catalog-item.placeholder .ph-text{ font-size:11px; }
-
-  @media (max-width: 760px){
-    .catalog-grid{ grid-template-columns: repeat(2, 1fr); }
-  }
-
-  /* lightbox */
-  .lightbox{
-    position:fixed;
-    inset:0;
-    background: rgba(15,12,8,0.92);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    padding:30px;
-  }
-  .lightbox.open{ display:flex; }
-  .lightbox img{
-    max-width:90vw;
-    max-height:85vh;
-    border-radius:4px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  }
-  .lightbox-close{
-    position:absolute;
-    top:22px; right:28px;
-    font-size:30px;
-    color: var(--ivory);
-    background:none;
-    border:none;
-    cursor:pointer;
-    line-height:1;
-  }
-
-  /* ---- CONTACT / FOOTER ---- */
-  .contact-section{
-    background: var(--indigo-deep);
-    color: var(--ivory);
-    text-align:center;
-    padding: 90px 24px 70px;
-  }
-  .contact-section .section-head h2{ color: var(--ivory); }
-  .contact-section .section-eyebrow{ color: var(--gold-light); }
-  .address-block{
-    font-size:15px;
-    color: rgba(246,241,230,0.78);
-    max-width:480px;
-    margin: 0 auto 36px;
-  }
-  .address-block strong{
-    display:block;
-    color: var(--ivory);
-    font-size:16px;
-    margin-bottom:6px;
-  }
-  .social-row{
-    display:flex;
-    justify-content:center;
-    gap:24px;
-    margin-top:34px;
-    font-size:13px;
-  }
-  .social-row a{
-    color: rgba(246,241,230,0.75);
-    text-decoration:none;
-    border-bottom: 1px solid rgba(246,241,230,0.25);
-    padding-bottom:2px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .social-row a:hover{ color: var(--gold-light); border-color: var(--gold-light); }
-
-  footer{
-    background: var(--indigo-deep);
-    color: rgba(246,241,230,0.45);
-    text-align:center;
-    font-size:12px;
-    padding: 22px 24px 30px;
-    border-top: 1px solid rgba(246,241,230,0.1);
-  }
-
-  /* ---- GALLERY (marquee / foto berjalan) ---- */
-  .gallery-sub{
-    margin-bottom: 56px;
-  }
-  .gallery-sub:last-child{ margin-bottom:0; }
-  .gallery-sub-label{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:18px;
-    padding: 0 4px;
-  }
-  .gallery-sub-label .tag{
-    font-size:11px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    font-weight:700;
-    padding: 5px 14px;
-    border-radius:20px;
-    color: var(--ivory);
-  }
-  .gallery-sub-label.kimono .tag{ background: var(--indigo); }
-  .gallery-sub-label.yukata .tag{ background: var(--vermillion); }
-  .gallery-sub-label h3{
-    font-family:'Cormorant Garamond', serif;
-    font-size:24px;
-    font-weight:600;
-    color: var(--indigo-deep);
-  }
-  .gallery-sub-label .line{
-    flex:1;
-    height:1px;
-    background: var(--line);
-  }
-
-  .marquee-wrap{
-    overflow:hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  }
-  .marquee-track{
-    display:flex;
-    gap:14px;
-    width: max-content;
-    animation: marquee-scroll 32s linear infinite;
-  }
-  .marquee-wrap:hover .marquee-track{ animation-play-state: paused; }
-  .marquee-track.reverse{ animation-direction: reverse; }
-  @keyframes marquee-scroll{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .marquee-track{ animation: none; }
-  }
-
-  .gallery-item{
-    flex: 0 0 auto;
-    width: 220px;
-    aspect-ratio: 3/4;
-    background: var(--ivory-deep);
-    border: 1.5px dashed var(--gold);
-    border-radius:2px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    color: #8a7d63;
-    text-align:center;
-    padding:16px;
-    overflow:hidden;
-    position:relative;
-  }
-  .gallery-item.has-photo{
-    border: none;
-    border-radius:6px;
-    box-shadow: 0 8px 20px rgba(34,29,24,0.18);
-  }
-  .gallery-item img{
-    width:100%; height:100%;
-    object-fit:cover;
-    position:absolute;
-    inset:0;
-  }
-  .gallery-item .ph-icon{
-    font-family:'Zen Old Mincho', serif;
-    font-size:28px;
-    color: var(--gold);
-  }
-  .gallery-item .ph-text{
-    font-size:12px;
-    letter-spacing:0.5px;
-  }
-  @media (max-width: 760px){
-    .gallery-item{ width:160px; }
-  }
-
-  /* ---- MAP / ADDRESS ---- */
-  .map-btn{
-    margin-top:18px;
-  }
-
-  @media (max-width: 760px){
-    .packages{ grid-template-columns: 1fr; }
-    .info-grid{ grid-template-columns: 1fr; }
-    .hero-kanji{ font-size: 36px; }
-  }
+:root{
+  --bg:#fff; --card:#f6f6f6; --ink:#222; --muted:#777; --line:#e3e3e3;
+  --primary:#7a52b8; --primary-ink:#fff; --soft:#efe9f8;
+  --ok:#b7e4cc; --ok-ink:#17683e; --bad:#f6c4c4; --bad-ink:#9a2020;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#16151a; --card:#232229; --ink:#eee; --muted:#9a98a3; --line:#33323a;
+    --soft:#2b2538; --ok:#1f4d36; --ok-ink:#a8e8c6; --bad:#5a2626; --bad-ink:#f6b6b6;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header .bar{display:flex;align-items:center;gap:8px;min-height:52px}
+header h1{flex:1;margin:0;font-size:16px;text-align:center;font-weight:600}
+.btn{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;background:var(--primary);color:var(--primary-ink)}
+.btn.sm{padding:6px 12px;font-size:13px;background:var(--soft);color:var(--primary)}
+.btn.ghost{background:transparent;color:var(--ink);font-size:20px;padding:6px 10px}
+.btn.block{display:block;width:100%}
+.btn:disabled{opacity:.5}
+.card{background:var(--card);border-radius:12px;padding:16px;margin:16px 0}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.sec-row{padding:12px 0;border-top:1px solid var(--line);text-align:center}
+.sec-row:first-of-type{border-top:0}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;font-size:18px}
+.timer.low{color:#d33}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--line);display:flex;z-index:5}
+.tabs button{flex:1;border:0;background:none;padding:14px 4px;font:inherit;font-size:14px;color:var(--muted);cursor:pointer}
+.tabs button.on{color:var(--ink);font-weight:700;box-shadow:inset 0 2px 0 var(--primary)}
+main{padding-bottom:80px}
+.inst,.passage,.qn{white-space:pre-line}
+.qimg{max-width:100%;border:1px solid var(--line);border-radius:8px;margin:8px 0;display:block}
+.inst{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:18px 0 8px;font-weight:600}
+.passage{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0 12px;line-height:1.9}
+.qn{font-weight:600;margin:16px 0 6px;line-height:1.8}
+.qn u{text-underline-offset:4px}
+.opt{display:block;width:100%;text-align:left;border:2px solid transparent;background:var(--card);border-radius:8px;padding:12px 14px;margin:8px 0;font:inherit;color:inherit;cursor:pointer}
+.opt.sel{border-color:var(--primary);background:var(--soft)}
+.opt.ok{background:var(--ok);color:var(--ok-ink);border-color:var(--ok-ink)}
+.opt.bad{background:var(--bad);color:var(--bad-ink);border-color:var(--bad-ink)}
+.opt[disabled]{cursor:default}
+.explain{background:var(--card);border-radius:8px;padding:10px 14px;font-size:14px;margin:6px 0}
+.audio{position:sticky;top:53px;z-index:4;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.audio audio{flex:1;height:36px}
+.cert{border:2px solid var(--primary);border-radius:12px;padding:16px;background:linear-gradient(180deg,#f7e8d6,#f7e8d6 55%,#c9b6e6);color:#222;position:relative;overflow:hidden}
+.cert h2{margin:0;font-size:16px;text-align:center}
+.cert table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;text-align:center}
+.cert td,.cert th{border:1px solid #333;padding:8px 4px}
+.cert .status{font-size:20px;font-weight:700;margin:14px 0 2px}
+.cert .pass{color:#17683e}.cert .fail{color:#a22}
+dialog{border:0;border-radius:12px;padding:20px;max-width:380px;background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:#0008}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.list a{display:block;text-decoration:none;color:inherit}
 </style>
 </head>
-<body class="lang-id">
+<body>
+<header><div class="wrap"><div class="bar" id="bar"></div></div></header>
+<div class="wrap"><main id="app"></main></div>
+<div class="tabs" id="tabs" hidden></div>
+<dialog id="dlg"></dialog>
 
-  <div class="lang-toggle">
-    <button class="lang-btn active" id="btnId">ID</button>
-    <button class="lang-btn" id="btnEn">EN</button>
-  </div>
-
-  <section class="hero">
-    <div class="hero-kanji left">着物</div>
-    <div class="hero-kanji right">浴衣</div>
-    <div class="hero-content">
-      <div class="eyebrow" data-id>Sewa Kimono &amp; Yukata</div>
-      <div class="eyebrow" data-en>Kimono &amp; Yukata Rental</div>
-      <h1 class="serif">Yukata Mika <em>Studio</em></h1>
-      <p class="tagline" data-id>Kimono dan yukata otentik Jepang, untuk momen istimewamu di Semarang.</p>
-      <p class="tagline" data-en>Authentic Japanese kimono and yukata, for your special moments in Semarang.</p>
-      <div class="cta-row">
-        <a href="https://wa.me/6287771566602" class="btn btn-gold" target="_blank" rel="noopener">
-          <span data-id>Reservasi via WhatsApp</span><span data-en>Book via WhatsApp</span>
-        </a>
-        <a href="#paket" class="btn btn-outline">
-          <span data-id>Lihat Paket</span><span data-en>View Packages</span>
-        </a>
-        <a href="#panduan" class="btn btn-outline">
-          <span data-id>▶ Video Tutorial</span><span data-en>▶ Video Tutorial</span>
-        </a>
-        <a href="#katalog" class="btn btn-outline">
-          <span data-id>Katalog Foto</span><span data-en>Photo Catalog</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <div class="obi-divider"></div>
-
-  <section id="paket">
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Pilihan Paket</div>
-      <div class="section-eyebrow" data-en>Our Packages</div>
-      <h2 class="serif" data-id>Kimono &amp; Yukata</h2>
-      <h2 class="serif" data-en>Kimono &amp; Yukata</h2>
-    </div>
-    <div class="packages">
-      <div class="pkg-card kimono">
-        <div class="pkg-label" data-id>Formal &amp; Elegan</div>
-        <div class="pkg-label" data-en>Formal &amp; Elegant</div>
-        <h3 class="serif">Kimono Rental</h3>
-        <div class="pkg-price">Rp300.000<span data-id> / hari</span><span data-en> / day</span></div>
-        <p class="pkg-desc" data-id>Kimono lengkap dengan obi dan aksesori, cocok untuk sesi foto maupun acara spesial. Pemasangan kimono dibantu langsung oleh owner.</p>
-        <p class="pkg-desc" data-en>Full kimono set with obi and accessories, perfect for photoshoots or special occasions. Dressing assistance is provided by the owner.</p>
-      </div>
-      <div class="pkg-card yukata">
-        <div class="pkg-label" data-id>Santai &amp; Musim Panas</div>
-        <div class="pkg-label" data-en>Casual &amp; Summer Style</div>
-        <h3 class="serif">Yukata Rental</h3>
-        <div class="pkg-price">Rp180.000<span data-id> / hari</span><span data-en> / day</span></div>
-        <p class="pkg-desc" data-id>Yukata ringan dan nyaman dipakai, pilihan tepat untuk jalan-jalan santai atau acara kasual.</p>
-        <p class="pkg-desc" data-en>Light and comfortable yukata, a great choice for casual outings or relaxed events.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="obi-divider"></div>
-
-  <section>
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Informasi</div>
-      <div class="section-eyebrow" data-en>Information</div>
-      <h2 class="serif" data-id>Cara Reservasi</h2>
-      <h2 class="serif" data-en>How to Book</h2>
-    </div>
-    <div class="info-grid">
-      <div class="info-item">
-        <div class="info-icon">時</div>
-        <h4 data-id>Jam Operasional</h4>
-        <h4 data-en>Operating Hours</h4>
-        <p data-id>Hanya dengan perjanjian melalui WhatsApp</p>
-        <p data-en>By appointment via WhatsApp only</p>
-      </div>
-      <div class="info-item">
-        <div class="info-icon">約</div>
-        <h4 data-id>Reservasi</h4>
-        <h4 data-en>Reservation</h4>
-        <p data-id>Wajib reservasi terlebih dahulu melalui WhatsApp</p>
-        <p data-en>Reservation required via WhatsApp in advance</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="obi-divider"></div>
-
-  <section id="galeri">
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Galeri</div>
-      <div class="section-eyebrow" data-en>Gallery</div>
-      <h2 class="serif" data-id>Koleksi Kimono &amp; Yukata</h2>
-      <h2 class="serif" data-en>Kimono &amp; Yukata Collection</h2>
-    </div>
-
-    <!--
-      CARA MENAMBAHKAN FOTO ASLI:
-      Upload file foto langsung sejajar dengan index.html (TANPA folder assets/).
-      Lalu ganti setiap <div class="gallery-item">...</div> di bawah dengan:
-      <div class="gallery-item has-photo"><img src="kimono1.jpg" alt="Kimono Mika 1"></div>
-      Setiap track berisi 2 set foto yang sama (duplikat) agar animasi loop terlihat mulus —
-      kalau menambah/mengurangi jumlah foto, pastikan kedua set tetap identik dan berurutan sama.
-    -->
-
-    <div class="gallery-sub">
-      <div class="gallery-sub-label kimono">
-        <span class="tag">Kimono</span>
-        <h3 class="serif" data-id>Galeri Kimono</h3>
-        <h3 class="serif" data-en>Kimono Gallery</h3>
-        <div class="line"></div>
-      </div>
-      <div class="marquee-wrap">
-        <div class="marquee-track" id="trackKimono">
-          <div class="gallery-item has-photo"><img src="kimono1.jpg" alt="Kimono Mika 1"></div>
-          <div class="gallery-item has-photo"><img src="kimono2.jpg" alt="Kimono Mika 2"></div>
-          <div class="gallery-item has-photo"><img src="kimono3.jpeg" alt="Kimono Mika 3"></div>
-          <div class="gallery-item has-photo"><img src="kimono4.jpg" alt="Kimono Mika 4"></div>
-          <div class="gallery-item has-photo"><img src="kimono5.jpg" alt="Kimono Mika 5"></div>
-          <div class="gallery-item has-photo"><img src="kimono7.jpeg" alt="Kimono Mika 7"></div>
-          <div class="gallery-item has-photo"><img src="kimono8.jpeg" alt="Kimono Mika 8"></div>
-          <div class="gallery-item has-photo"><img src="kimono9.jpeg" alt="Kimono Mika 9"></div>
-          <div class="gallery-item has-photo"><img src="kimono10.jpeg" alt="Kimono Mika 10"></div>
-          <div class="gallery-item has-photo"><img src="kimono11.jpg" alt="Kimono Mika 11"></div>
-          <div class="gallery-item has-photo"><img src="kimono12.jpg" alt="Kimono Mika 12"></div>
-          <div class="gallery-item has-photo"><img src="kimono13.jpg" alt="Kimono Mika 13"></div>
-          <div class="gallery-item has-photo"><img src="kimono14.jpeg" alt="Kimono Mika 14"></div>
-          <div class="gallery-item has-photo"><img src="kimono15.jpg" alt="Kimono Mika 15"></div>
-          <div class="gallery-item has-photo"><img src="kimono16.jpg" alt="Kimono Mika 16"></div>
-          <div class="gallery-item has-photo"><img src="kimono17.jpg" alt="Kimono Mika 17"></div>
-          <div class="gallery-item has-photo"><img src="kimono18.jpg" alt="Kimono Mika 18"></div>
-          <div class="gallery-item has-photo"><img src="kimono19.jpg" alt="Kimono Mika 19"></div>
-          <div class="gallery-item has-photo"><img src="kimono20.jpg" alt="Kimono Mika 20"></div>
-          <div class="gallery-item has-photo"><img src="kimono21.jpeg" alt="Kimono Mika 21"></div>
-          <div class="gallery-item has-photo"><img src="kimono22.jpeg" alt="Kimono Mika 22"></div>
-          <div class="gallery-item has-photo"><img src="kimono23.jpeg" alt="Kimono Mika 23"></div>
-                    <div class="gallery-item has-photo"><img src="kimono24.jpeg" alt="Kimono Mika 24"></div>
-          <div class="gallery-item has-photo"><img src="kimono25.jpeg" alt="Kimono Mika 25"></div>
-          <div class="gallery-item has-photo"><img src="kimono26.jpeg" alt="Kimono Mika 26"></div>
-          <div class="gallery-item has-photo"><img src="kimono27.jpeg" alt="Kimono Mika 27"></div>
-          <div class="gallery-item has-photo"><img src="kimono28.jpeg" alt="Kimono Mika 28"></div>
-          <div class="gallery-item has-photo"><img src="kimono29.jpeg" alt="Kimono Mika 29"></div>
-          <div class="gallery-item has-photo"><img src="kimono30.jpeg" alt="Kimono Mika 30"></div>
-          <div class="gallery-item has-photo"><img src="kimono31.jpeg" alt="Kimono Mika 31"></div>
-          <!-- duplikat set di atas untuk loop mulus -->
-          <div class="gallery-item has-photo"><img src="kimono1.jpg" alt="Kimono Mika 1"></div>
-          <div class="gallery-item has-photo"><img src="kimono2.jpg" alt="Kimono Mika 2"></div>
-          <div class="gallery-item has-photo"><img src="kimono3.jpeg" alt="Kimono Mika 3"></div>
-          <div class="gallery-item has-photo"><img src="kimono4.jpg" alt="Kimono Mika 4"></div>
-          <div class="gallery-item has-photo"><img src="kimono5.jpg" alt="Kimono Mika 5"></div>
-          <div class="gallery-item has-photo"><img src="kimono7.jpeg" alt="Kimono Mika 7"></div>
-          <div class="gallery-item has-photo"><img src="kimono8.jpeg" alt="Kimono Mika 8"></div>
-          <div class="gallery-item has-photo"><img src="kimono9.jpeg" alt="Kimono Mika 9"></div>
-          <div class="gallery-item has-photo"><img src="kimono10.jpeg" alt="Kimono Mika 10"></div>
-          <div class="gallery-item has-photo"><img src="kimono11.jpg" alt="Kimono Mika 11"></div>
-          <div class="gallery-item has-photo"><img src="kimono12.jpg" alt="Kimono Mika 12"></div>
-          <div class="gallery-item has-photo"><img src="kimono13.jpg" alt="Kimono Mika 13"></div>
-          <div class="gallery-item has-photo"><img src="kimono14.jpeg" alt="Kimono Mika 14"></div>
-          <div class="gallery-item has-photo"><img src="kimono15.jpg" alt="Kimono Mika 15"></div>
-          <div class="gallery-item has-photo"><img src="kimono16.jpg" alt="Kimono Mika 16"></div>
-          <div class="gallery-item has-photo"><img src="kimono17.jpg" alt="Kimono Mika 17"></div>
-          <div class="gallery-item has-photo"><img src="kimono18.jpg" alt="Kimono Mika 18"></div>
-          <div class="gallery-item has-photo"><img src="kimono19.jpg" alt="Kimono Mika 19"></div>
-          <div class="gallery-item has-photo"><img src="kimono20.jpg" alt="Kimono Mika 20"></div>
-          <div class="gallery-item has-photo"><img src="kimono21.jpeg" alt="Kimono Mika 21"></div>
-          <div class="gallery-item has-photo"><img src="kimono22.jpeg" alt="Kimono Mika 22"></div>
-          <div class="gallery-item has-photo"><img src="kimono23.jpeg" alt="Kimono Mika 23"></div>
-                    <div class="gallery-item has-photo"><img src="kimono24.jpeg" alt="Kimono Mika 24"></div>
-          <div class="gallery-item has-photo"><img src="kimono25.jpeg" alt="Kimono Mika 25"></div>
-          <div class="gallery-item has-photo"><img src="kimono26.jpeg" alt="Kimono Mika 26"></div>
-          <div class="gallery-item has-photo"><img src="kimono27.jpeg" alt="Kimono Mika 27"></div>
-          <div class="gallery-item has-photo"><img src="kimono28.jpeg" alt="Kimono Mika 28"></div>
-          <div class="gallery-item has-photo"><img src="kimono29.jpeg" alt="Kimono Mika 29"></div>
-          <div class="gallery-item has-photo"><img src="kimono30.jpeg" alt="Kimono Mika 30"></div>
-          <div class="gallery-item has-photo"><img src="kimono31.jpeg" alt="Kimono Mika 31"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-sub">
-      <div class="gallery-sub-label yukata">
-        <span class="tag">Yukata</span>
-        <h3 class="serif" data-id>Galeri Yukata</h3>
-        <h3 class="serif" data-en>Yukata Gallery</h3>
-        <div class="line"></div>
-      </div>
-      <div class="marquee-wrap">
-        <div class="marquee-track reverse" id="trackYukata">
-          <div class="gallery-item has-photo"><img src="yukata1.jpeg" alt="Yukata Mika 1"></div>
-          <div class="gallery-item has-photo"><img src="yukata2.jpeg" alt="Yukata Mika 2"></div>
-          <div class="gallery-item has-photo"><img src="yukata3.jpeg" alt="Yukata Mika 3"></div>
-          <div class="gallery-item has-photo"><img src="yukata4.jpeg" alt="Yukata Mika 4"></div>
-          <div class="gallery-item has-photo"><img src="yukata5.jpeg" alt="Yukata Mika 5"></div>
-          <div class="gallery-item has-photo"><img src="yukata6.jpeg" alt="Yukata Mika 6"></div>
-          <div class="gallery-item has-photo"><img src="yukata8.jpeg" alt="Yukata Mika 8"></div>
-          <div class="gallery-item has-photo"><img src="yukata9.jpeg" alt="Yukata Mika 9"></div>
-          <div class="gallery-item has-photo"><img src="yukata10.jpeg" alt="Yukata Mika 10"></div>
-          <div class="gallery-item has-photo"><img src="yukata12.jpeg" alt="Yukata Mika 12"></div>
-          <div class="gallery-item has-photo"><img src="yukata13.jpeg" alt="Yukata Mika 13"></div>
-          <div class="gallery-item has-photo"><img src="yukata14.JPG" alt="Yukata Mika 14"></div>
-          <div class="gallery-item has-photo"><img src="yukata16.JPG" alt="Yukata Mika 16"></div>
-          <div class="gallery-item has-photo"><img src="yukata17.jpeg" alt="Yukata Mika 17"></div>
-          <div class="gallery-item has-photo"><img src="yukata18.jpeg" alt="Yukata Mika 18"></div>
-          <!-- duplikat set di atas untuk loop mulus -->
-          <div class="gallery-item has-photo"><img src="yukata1.jpeg" alt="Yukata Mika 1"></div>
-          <div class="gallery-item has-photo"><img src="yukata2.jpeg" alt="Yukata Mika 2"></div>
-          <div class="gallery-item has-photo"><img src="yukata3.jpeg" alt="Yukata Mika 3"></div>
-          <div class="gallery-item has-photo"><img src="yukata4.jpeg" alt="Yukata Mika 4"></div>
-          <div class="gallery-item has-photo"><img src="yukata5.jpeg" alt="Yukata Mika 5"></div>
-          <div class="gallery-item has-photo"><img src="yukata6.jpeg" alt="Yukata Mika 6"></div>
-          <div class="gallery-item has-photo"><img src="yukata8.jpeg" alt="Yukata Mika 8"></div>
-          <div class="gallery-item has-photo"><img src="yukata9.jpeg" alt="Yukata Mika 9"></div>
-          <div class="gallery-item has-photo"><img src="yukata10.jpeg" alt="Yukata Mika 10"></div>
-          <div class="gallery-item has-photo"><img src="yukata12.jpeg" alt="Yukata Mika 12"></div>
-          <div class="gallery-item has-photo"><img src="yukata13.jpeg" alt="Yukata Mika 13"></div>
-          <div class="gallery-item has-photo"><img src="yukata14.JPG" alt="Yukata Mika 14"></div>
-          <div class="gallery-item has-photo"><img src="yukata16.JPG" alt="Yukata Mika 16"></div>
-          <div class="gallery-item has-photo"><img src="yukata17.jpeg" alt="Yukata Mika 17"></div>
-          <div class="gallery-item has-photo"><img src="yukata18.jpeg" alt="Yukata Mika 18"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="obi-divider"></div>
-
-  <section id="panduan">
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Panduan Pemakaian</div>
-      <div class="section-eyebrow" data-en>How to Wear</div>
-      <h2 class="serif" data-id>Tutorial Video</h2>
-      <h2 class="serif" data-en>Video Tutorial</h2>
-    </div>
-
-    <div class="video-grid">
-
-      <a class="video-card" href="https://youtu.be/PJXeHtg9ZIo" target="_blank" rel="noopener">
-        <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/PJXeHtg9ZIo/hqdefault.jpg" alt="Pemakaian Yukata">
-          <div class="video-play">
-            <div class="video-play-btn">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="video-num">01</div>
-        </div>
-        <div class="video-info">
-          <h4 data-id>Pemakaian Yukata</h4>
-          <h4 data-en>How to Wear Yukata</h4>
-          <p>YouTube · Yukata Mika</p>
-        </div>
-      </a>
-
-      <a class="video-card" href="https://youtu.be/HflcC2tztPc" target="_blank" rel="noopener">
-        <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/HflcC2tztPc/hqdefault.jpg" alt="Pemakaian Obi">
-          <div class="video-play">
-            <div class="video-play-btn">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="video-num">02</div>
-        </div>
-        <div class="video-info">
-          <h4 data-id>Pemakaian Obi</h4>
-          <h4 data-en>How to Tie Obi</h4>
-          <p>YouTube · Yukata Mika</p>
-        </div>
-      </a>
-
-      <a class="video-card" href="https://youtu.be/lD1A1JE2iDE" target="_blank" rel="noopener">
-        <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/lD1A1JE2iDE/hqdefault.jpg" alt="Pemakaian Kimono Formal">
-          <div class="video-play">
-            <div class="video-play-btn">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="video-num">03</div>
-        </div>
-        <div class="video-info">
-          <h4 data-id>Pemakaian Kimono Formal</h4>
-          <h4 data-en>How to Wear Formal Kimono</h4>
-          <p>YouTube · Yukata Mika</p>
-        </div>
-      </a>
-
-      <a class="video-card" href="https://youtu.be/xU-SxteQr7g" target="_blank" rel="noopener">
-        <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/xU-SxteQr7g/hqdefault.jpg" alt="Pemakaian Kimono Pria">
-          <div class="video-play">
-            <div class="video-play-btn">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="video-num">04</div>
-        </div>
-        <div class="video-info">
-          <h4 data-id>Kimono Pria</h4>
-          <h4 data-en>Men's Kimono</h4>
-          <p>YouTube · Yukata Mika</p>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
-  <div class="obi-divider"></div>
-
-  <section id="katalog">
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Lihat Semua</div>
-      <div class="section-eyebrow" data-en>See All</div>
-      <h2 class="serif" data-id>Katalog Foto</h2>
-      <h2 class="serif" data-en>Photo Catalog</h2>
-    </div>
-
-    <div class="catalog-filters">
-      <button class="filter-btn active" data-filter="all"><span data-id>Semua</span><span data-en>All</span></button>
-      <button class="filter-btn" data-filter="kimono">Kimono</button>
-      <button class="filter-btn" data-filter="yukata">Yukata</button>
-    </div>
-
-    <!--
-      CARA MENAMBAHKAN FOTO BARU KE KATALOG:
-      Tambahkan baris baru di bawah, format:
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="namafile.jpg" alt="..."></div>
-      Ganti class "kimono" jadi "yukata" untuk foto yukata.
-      Upload file foto langsung sejajar dengan index.html (tanpa folder).
-    -->
-    <div class="catalog-grid" id="catalogGrid">
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono1.jpg" alt="Kimono Mika 1"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono2.jpg" alt="Kimono Mika 2"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono3.jpeg" alt="Kimono Mika 3"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono4.jpg" alt="Kimono Mika 4"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono5.jpg" alt="Kimono Mika 5"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono7.jpeg" alt="Kimono Mika 7"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono8.jpeg" alt="Kimono Mika 8"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono9.jpeg" alt="Kimono Mika 9"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono10.jpeg" alt="Kimono Mika 10"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono11.jpg" alt="Kimono Mika 11"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono12.jpg" alt="Kimono Mika 12"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono13.jpg" alt="Kimono Mika 13"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono14.jpeg" alt="Kimono Mika 14"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono15.jpg" alt="Kimono Mika 15"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono16.jpg" alt="Kimono Mika 16"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono17.jpg" alt="Kimono Mika 17"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono18.jpg" alt="Kimono Mika 18"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono19.jpg" alt="Kimono Mika 19"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono20.jpg" alt="Kimono Mika 20"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono21.jpeg" alt="Kimono Mika 21"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono22.jpeg" alt="Kimono Mika 22"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono23.jpeg" alt="Kimono Mika 23"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata1.jpeg" alt="Yukata Mika 1"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata2.jpeg" alt="Yukata Mika 2"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata3.jpeg" alt="Yukata Mika 3"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata4.jpeg" alt="Yukata Mika 4"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata5.jpeg" alt="Yukata Mika 5"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata6.jpeg" alt="Yukata Mika 6"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata8.jpeg" alt="Yukata Mika 8"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata9.jpeg" alt="Yukata Mika 9"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata10.jpeg" alt="Yukata Mika 10"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata12.jpeg" alt="Yukata Mika 12"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata13.jpeg" alt="Yukata Mika 13"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata14.JPG" alt="Yukata Mika 14"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata16.JPG" alt="Yukata Mika 16"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata17.jpeg" alt="Yukata Mika 17"></div>
-            <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono24.jpeg" alt="Kimono Mika 24"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono25.jpeg" alt="Kimono Mika 25"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono26.jpeg" alt="Kimono Mika 26"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono27.jpeg" alt="Kimono Mika 27"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono28.jpeg" alt="Kimono Mika 28"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono29.jpeg" alt="Kimono Mika 29"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono30.jpeg" alt="Kimono Mika 30"></div>
-      <div class="catalog-item kimono"><span class="cat-tag">Kimono</span><img src="kimono31.jpeg" alt="Kimono Mika 31"></div>
-      <div class="catalog-item yukata"><span class="cat-tag">Yukata</span><img src="yukata18.jpeg" alt="Yukata Mika 18"></div>
-    </div>
-  </section>
-
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose">&times;</button>
-    <img id="lightboxImg" src="" alt="">
-  </div>
-
-  <div class="obi-divider"></div>
-
-  <div class="contact-section">
-    <div class="section-head">
-      <div class="section-eyebrow" data-id>Hubungi Kami</div>
-      <div class="section-eyebrow" data-en>Get in Touch</div>
-      <h2 class="serif" data-id>Buat Reservasi</h2>
-      <h2 class="serif" data-en>Make a Reservation</h2>
-    </div>
-
-    <div class="address-block">
-      <strong data-id>Alamat Studio</strong>
-      <strong data-en>Studio Address</strong>
-      <span data-id>Jalan Puspowarno Tengah 9 No. 8, RT 5 RW 2, Salaman Mloyo, Semarang Barat</span>
-      <span data-en>Jalan Puspowarno Tengah 9 No. 8, RT 5 RW 2, Salaman Mloyo, West Semarang</span>
-    </div>
-
-    <a href="https://share.google/33M5CVFvS7pd6czif" class="btn btn-outline map-btn" target="_blank" rel="noopener">
-      <span data-id>📍 Lihat Lokasi di Google Maps</span><span data-en>📍 View Location on Google Maps</span>
-    </a>
-    <br><br>
-
-    <a href="https://wa.me/6287771566602" class="btn btn-gold" target="_blank" rel="noopener">
-      <span data-id>Chat WhatsApp: 0877-7156-6602</span><span data-en>WhatsApp: 0877-7156-6602</span>
-    </a>
-
-    <div class="social-row">
-      <a href="https://www.instagram.com/yukatamikastudio" target="_blank" rel="noopener">Instagram @yukatamikastudio</a>
-    </div>
-  </div>
-
-  <footer>
-    <span data-id>&copy; 2026 Yukata Mika Studio — Semarang, Indonesia</span>
-    <span data-en>&copy; 2026 Yukata Mika Studio — Semarang, Indonesia</span>
-  </footer>
-
+<script src="data.js"></script>
+<script src="data2.js"></script>
 <script>
-  const body = document.body;
-  const btnId = document.getElementById('btnId');
-  const btnEn = document.getElementById('btnEn');
+const $ = s => document.querySelector(s);
+const app = $('#app'), bar = $('#bar'), tabs = $('#tabs'), dlg = $('#dlg');
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// teks soal boleh memuat <u>…</u>
+const rich = s => esc(s).replace(/&lt;u&gt;/g,'<u>').replace(/&lt;\/u&gt;/g,'</u>');
 
-  function setLang(lang){
-    body.classList.remove('lang-id', 'lang-en');
-    body.classList.add('lang-' + lang);
-    btnId.classList.toggle('active', lang === 'id');
-    btnEn.classList.toggle('active', lang === 'en');
-  }
+let test, state, tick, curTab = 0;
+const totalMin = t => t.sections.reduce((a,s)=>a+s.minutes,0);
+const allQs = sec => sec.groups.flatMap(g=>g.questions);
 
-  btnId.addEventListener('click', () => setLang('id'));
-  btnEn.addEventListener('click', () => setLang('en'));
-
-  // --- Katalog: filter Kimono/Yukata ---
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const catalogItems = document.querySelectorAll('.catalog-item:not(.placeholder)');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      catalogItems.forEach(item => {
-        const show = filter === 'all' || item.classList.contains(filter);
-        item.style.display = show ? '' : 'none';
-      });
-      // placeholder kategori (foto belum ada) ikut filter juga
-      document.querySelectorAll('.catalog-item.placeholder').forEach(ph => {
-        ph.style.display = (filter === 'all' || filter === 'yukata') ? '' : 'none';
-      });
+function setBar(title, left, right){
+  bar.innerHTML = `<span style="min-width:90px">${left||''}</span><h1>${title}</h1><span style="min-width:90px;text-align:right">${right||''}</span>`;
+}
+function home(){
+  clearInterval(tick); tabs.hidden = true; stopAudio();
+  const id = new URLSearchParams(location.search).get('test');
+  if(id){ const t = TESTS.find(x=>x.id===id); if(t) return info(t); }
+  if(TESTS.length===1) return info(TESTS[0], true);
+  setBar('Simulasi JLPT');
+  app.innerHTML = `<div class="list">` + TESTS.map(t=>`<a href="#" data-id="${t.id}"><div class="card"><b>${esc(t.title)}</b><div class="muted">${t.level} · ${totalMin(t)} menit</div></div></a>`).join('') + `</div>`;
+  app.querySelectorAll('a').forEach(a=>a.onclick=e=>{e.preventDefault(); info(TESTS.find(t=>t.id===a.dataset.id));});
+}
+function info(t, root){
+  test = t; clearInterval(tick); tabs.hidden = true;
+  const saved = store.get('exam:'+t.id), res = store.get('result:'+t.id);
+  setBar(esc(t.title), root?'':'<button class="btn ghost" id="back">‹</button>');
+  if(!root) $('#back').onclick = ()=>{ history.replaceState(null,'',location.pathname); home(); };
+  app.innerHTML = `
+    <div class="card center">
+      <div><b>Waktu: ${totalMin(t)} menit</b></div>
+      <div><b>Skor lulus: ${t.passScore}</b> <span class="muted">(dari 180)</span></div>
+      <div style="margin-top:12px">${t.sections.map(s=>`<div class="sec-row">${esc(s.name)}: <b>${esc(s.jp)}</b> (${s.minutes}分)</div>`).join('')}</div>
+    </div>
+    <p class="muted center">Waktu terus berjalan walau halaman ditutup. Jawabanmu tersimpan otomatis di perangkat ini.</p>
+    <button class="btn block" id="go">${saved?'Lanjutkan ujian':'Mulai ujian'}</button>
+    ${res?`<button class="btn block" id="last" style="margin-top:10px;background:var(--soft);color:var(--primary)">Lihat hasil terakhir</button>`:''}`;
+  $('#go').onclick = ()=> saved ? startExam(saved) : startExam(null);
+  if(res) $('#last').onclick = ()=>{ state = res; showResult(); };
+}
+function startExam(saved){
+  state = saved || { id:test.id, answers:{}, deadline: Date.now() + totalMin(test)*60000, name:'' };
+  if(!saved){ store.set('exam:'+test.id, state); }
+  curTab = 0; renderExam(); runTimer();
+}
+function key(si,gi,qi){ return si+'.'+gi+'.'+qi; }
+function runTimer(){
+  clearInterval(tick);
+  const t = ()=>{
+    const left = Math.max(0, Math.round((state.deadline-Date.now())/1000));
+    const el = $('#timer'); if(!el) return;
+    const h = String(Math.floor(left/3600)).padStart(2,'0'), m = String(Math.floor(left%3600/60)).padStart(2,'0'), s = String(left%60).padStart(2,'0');
+    el.textContent = `${h}:${m}:${s}`; el.classList.toggle('low', left<300);
+    if(left===0){ clearInterval(tick); submit(true); }
+  };
+  t(); tick = setInterval(t, 1000);
+}
+function renderExam(){
+  setBar(`<span class="timer" id="timer"></span>`, '<button class="btn ghost" id="back">‹</button>', '<button class="btn sm" id="save">Menyimpan</button> <button class="btn sm" id="fin">Menyerahkan</button>');
+  $('#back').onclick = ()=>confirmBox('Keluar sementara? Jawaban tersimpan dan waktu tetap berjalan.', 'Keluar', ()=>{clearInterval(tick); stopAudio(); home();});
+  $('#save').onclick = ()=>{ store.set('exam:'+test.id, state); toast('Tersimpan'); };
+  $('#fin').onclick = ()=>{
+    const n = test.sections.reduce((a,s,si)=>a+allQs(s).length,0), done = Object.keys(state.answers).length;
+    confirmBox(`Kamu menjawab ${done} dari ${n} soal. Serahkan sekarang?`, 'Serahkan', ()=>submit(false));
+  };
+  tabs.hidden = false;
+  tabs.innerHTML = test.sections.map((s,i)=>`<button class="${i===curTab?'on':''}" data-i="${i}">${esc(s.name)}</button>`).join('');
+  tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{ stopAudio(); curTab=+b.dataset.i; renderExam(); runTimer(); window.scrollTo(0,0); });
+  app.innerHTML = sectionHTML(test.sections[curTab], curTab, false);
+  bindOptions();
+  runTimer();
+}
+function sectionHTML(sec, si, review){
+  let no = 0, html = '';
+  sec.groups.forEach((g,gi)=>{
+    html += `<div class="inst">${esc(g.instruction)}</div>`;
+    if(g.audio) html += `<audio controls preload="none" src="${esc(g.audio)}" style="width:100%"></audio>`;
+    if(g.img) html += `<img class="qimg" src="${esc(g.img)}" alt="">`;
+    if(g.passage) html += `<div class="passage">${esc(g.passage)}</div>`;
+    g.questions.forEach((q,qi)=>{
+      no++;
+      const k = key(si,gi,qi), picked = state.answers[k];
+      html += `<div class="qn">${si+1}.${no} ${rich(q.q)}</div>`;
+      if(q.img) html += `<img class="qimg" src="${esc(q.img)}" alt="">`;
+      if(q.audio) html += `<audio controls preload="none" src="${esc(q.audio)}" style="width:100%"></audio>`;
+      else if(sec.group==='li' && q.tts) html += `<button class="btn sm" data-tts="${esc(q.tts)}">▶ Putar</button>`;
+      html += q.choices.map((c,ci)=>{
+        let cls = 'opt';
+        if(review){ if(ci===q.answer) cls+=' ok'; else if(ci===picked) cls+=' bad'; }
+        else if(picked===ci) cls+=' sel';
+        return `<button class="${cls}" data-k="${k}" data-c="${ci}" ${review?'disabled':''}>${ci+1}. ${rich(c)}</button>`;
+      }).join('');
+      if(review) html += `<div class="explain">${picked==null?'<b>Tidak dijawab.</b> ':''}${esc(q.explain||'')}</div>`;
     });
   });
-
-  // --- Lightbox: klik foto untuk perbesar ---
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxClose = document.getElementById('lightboxClose');
-
-  document.querySelectorAll('.catalog-item:not(.placeholder) img').forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox.classList.add('open');
-    });
+  return html;
+}
+function audioBar(sec){ return `<span class="muted">🎧 Soal mendengarkan: tekan tombol ▶ di tiap soal.</span>`; }
+function bindOptions(){
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.k, c=+b.dataset.c;
+    if(state.answers[k]===c) delete state.answers[k]; else state.answers[k]=c;
+    store.set('exam:'+test.id, state);
+    app.querySelectorAll(`.opt[data-k="${k}"]`).forEach(x=>x.classList.toggle('sel', +x.dataset.c===state.answers[k]));
   });
-  function closeLightbox(){ lightbox.classList.remove('open'); lightboxImg.src=''; }
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  app.querySelectorAll('[data-tts]').forEach(b=>b.onclick=()=>speak(b.dataset.tts));
+}
+function speak(t){
+  if(!('speechSynthesis' in window)) return toast('Browser tidak mendukung suara');
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang='ja-JP'; u.rate=.9; speechSynthesis.speak(u);
+}
+function stopAudio(){ try{ speechSynthesis.cancel(); }catch(e){} document.querySelectorAll('audio').forEach(a=>a.pause()); }
+
+function score(){
+  const per = test.sections.map((s,si)=>{
+    let ok=0, n=0, pts=0, got=0;
+    s.groups.forEach((g,gi)=>g.questions.forEach((q,qi)=>{
+      const w = g.pts||1; n++; pts+=w;
+      if(state.answers[key(si,gi,qi)]===q.answer){ ok++; got+=w; }
+    }));
+    return { name:s.name, group:s.group, ok, n, pts, got };
+  });
+  const g = grp => { const ps = per.filter(p=>p.group===grp); const t = ps.reduce((a,p)=>a+p.pts,0), got = ps.reduce((a,p)=>a+p.got,0); return t? got/t : 0; };
+  const lk = Math.round(g('lk')*120), li = Math.round(g('li')*60), total = lk+li;
+  const pass = total>=test.passScore && lk>=(test.minLK||0) && li>=(test.minLI||0);
+  return { per, lk, li, total, pass };
+}
+function submit(auto){
+  clearInterval(tick); stopAudio();
+  state.score = score(); state.submittedAt = Date.now(); state.auto = !!auto;
+  store.set('result:'+test.id, state); store.del('exam:'+test.id);
+  showResult();
+}
+function showResult(){
+  tabs.hidden = true; const r = state.score;
+  const d = new Date(state.submittedAt||Date.now());
+  setBar('Hasil', '<button class="btn ghost" id="back">‹</button>');
+  $('#back').onclick = ()=>info(test);
+  app.innerHTML = `
+    <div class="card" style="padding:0;background:none"><div class="cert">
+      <h2>日本語能力試験 ${r.pass?'合格':'不合格'} 結果通知書<br><span style="font-weight:500">Japanese-Language Proficiency Test — Test Result (Simulasi)</span></h2>
+      <p style="margin:12px 0 0">受験日 Test Date: ${d.toLocaleDateString('id-ID',{dateStyle:'full'})}<br>受験レベル Level: <b>${esc(test.level)}</b><br>
+      氏名 Name: <input id="nm" placeholder="Tulis namamu" value="${esc(state.name||'')}" style="border:0;border-bottom:1px solid #333;background:transparent;font:inherit;font-weight:700"></p>
+      <table>
+        <tr><th>言語知識・読解<br><small>Pengetahuan bahasa & Membaca</small></th><th>聴解<br><small>Mendengarkan</small></th><th>総合得点<br><small>Skor total</small></th></tr>
+        <tr><td>${r.lk}/120</td><td>${r.li}/60</td><td><b>${r.total}/180</b></td></tr>
+      </table>
+      <div class="center"><div class="status ${r.pass?'pass':'fail'}">${r.pass?'合格 Lulus':'不合格 Belum lulus'}</div>
+      <small>Skor lulus ${test.passScore} · minimum LK ${test.minLK} · minimum mendengarkan ${test.minLI}</small></div>
+      <table style="margin-top:12px"><tr><th>Bagian</th><th>Benar</th></tr>${r.per.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.ok}/${p.n}</td></tr>`).join('')}</table>
+    </div></div>
+    ${state.auto?'<p class="muted center">Waktu habis — jawabanmu diserahkan otomatis.</p>':''}
+    <button class="btn block" id="rv">Perlihatkan Jawaban</button>
+    <button class="btn block" id="again" style="margin-top:10px;background:var(--soft);color:var(--primary)">Ulangi ujian</button>`;
+  $('#nm').oninput = e=>{ state.name = e.target.value; store.set('result:'+test.id, state); };
+  $('#rv').onclick = ()=>review(0);
+  $('#again').onclick = ()=>confirmBox('Mulai ulang dari awal? Hasil lama akan terhapus.', 'Ulangi', ()=>{ store.del('result:'+test.id); store.del('exam:'+test.id); startExam(null); });
+}
+function review(i){
+  curTab = i; setBar('Jawaban', '<button class="btn ghost" id="back">‹</button>');
+  $('#back').onclick = showResult;
+  tabs.hidden = false;
+  tabs.innerHTML = test.sections.map((s,j)=>`<button class="${j===i?'on':''}" data-i="${j}">${esc(s.name)}</button>`).join('');
+  tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{ review(+b.dataset.i); window.scrollTo(0,0); });
+  app.innerHTML = sectionHTML(test.sections[i], i, true);
+}
+function confirmBox(msg, okLabel, fn){
+  dlg.innerHTML = `<p>${esc(msg)}</p><div class="row"><button class="btn sm" value="no">Batal</button><button class="btn" value="ok">${esc(okLabel)}</button></div>`;
+  dlg.querySelectorAll('button').forEach(b=>b.onclick=()=>{ dlg.close(); if(b.value==='ok') fn(); });
+  dlg.showModal();
+}
+function toast(m){
+  const t = document.createElement('div'); t.textContent = m;
+  t.style.cssText='position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#333;color:#fff;padding:8px 16px;border-radius:20px;font-size:14px;z-index:20';
+  document.body.appendChild(t); setTimeout(()=>t.remove(),1500);
+}
+document.addEventListener('play', e=>{ document.querySelectorAll('audio').forEach(a=>{ if(a!==e.target) a.pause(); }); }, true);
+home();
 </script>
 </body>
 </html>

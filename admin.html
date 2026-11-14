@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Yukata Mika Studio</title>
+<meta name="theme-color" content="#15263b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23a8392b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23f6f1e6' font-family='serif'%3E着%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--ivory:#f6f1e6;--ivory-deep:#efe7d6;--paper:#fffdf8;--ink:#221d18;--soft:#6b6257;--indigo:#1d3450;--indigo-deep:#15263b;--gold:#b8902f;--gold-light:#d6b563;--red:#a8392b;--green:#2f7d4f;--line:rgba(34,29,24,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ivory);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.5;-webkit-text-size-adjust:100%;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  button,input,select{font:inherit;color:inherit}
+  button{cursor:pointer}
+  [hidden]{display:none !important}
+  .top{position:sticky;top:0;z-index:20;background:var(--indigo-deep);color:var(--ivory);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .top h1{font-size:17px;font-weight:700;letter-spacing:.3px}
+  .top a,.top button{font-size:13px;color:var(--gold-light);background:none;border:none;text-decoration:none;padding:6px 4px}
+  .page{max-width:680px;margin:0 auto;padding:18px 16px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:17px;margin-bottom:6px;color:var(--indigo-deep)}
+  .muted{color:var(--soft);font-size:14px}
+  label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var(--indigo-deep)}
+  input[type=text],input[type=url],input[type=password]{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:16px}
+  input:focus{outline:2px solid var(--gold-light);border-color:var(--gold)}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:14px 18px;border-radius:14px;border:1px solid transparent;font-weight:700;font-size:16px;background:var(--indigo);color:var(--ivory)}
+  .btn:disabled{opacity:.5}
+  .btn.gold{background:var(--gold-light);color:var(--indigo-deep)}
+  .btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+  .btn.danger{background:transparent;border-color:var(--red);color:var(--red)}
+  .btn.big{min-height:72px;font-size:18px;border:2px dashed var(--gold);background:rgba(214,181,99,.14);color:var(--indigo-deep)}
+  details{margin-top:14px;font-size:14px}
+  summary{font-weight:600;color:var(--indigo);padding:6px 0}
+  ol{padding-left:20px;margin-top:8px;display:grid;gap:8px}
+  ol a{color:var(--indigo);font-weight:600}
+  code{background:var(--ivory-deep);padding:1px 6px;border-radius:6px;font-size:13px}
+
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--ivory-deep);padding:5px;border-radius:14px;margin-bottom:16px}
+  .tab{border:none;background:transparent;padding:12px 2px;border-radius:10px;font-weight:700;font-size:14px;color:var(--soft)}
+  .tab small{display:block;font-size:11px}
+  textarea{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit;font-size:16px;min-height:120px;resize:vertical}
+  .starpick{display:flex;gap:6px}
+  .starpick button{flex:1;min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-size:22px;color:#c9c2b5}
+  .starpick button.on{color:#f2b01e;border-color:#f2b01e}
+  .tab.active{background:var(--paper);color:var(--indigo-deep);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+  .tab small{font-weight:500;opacity:.7}
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 14px}
+  .seg button{padding:13px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:700}
+  .seg button.active{border-color:var(--indigo);background:var(--indigo);color:var(--ivory)}
+
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media (min-width:560px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+  .pitem{position:relative;aspect-ratio:3/4;border:none;padding:0;border-radius:10px;overflow:hidden;background:var(--ivory-deep)}
+  .pitem img{width:100%;height:100%;object-fit:cover;display:block}
+  .pitem .t{position:absolute;left:5px;top:5px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;color:#fff;background:var(--red)}
+  .pitem.yukata .t{background:var(--indigo)}
+  .pitem.new{outline:3px solid var(--green);outline-offset:-3px}
+  .pitem.new::after{content:"BARU";position:absolute;right:5px;bottom:5px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;color:#fff;background:var(--green)}
+
+  .row{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+  .row:first-child{border-top:none}
+  .row img,.row .noimg{width:92px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none;background:linear-gradient(135deg,var(--indigo),var(--red))}
+  .row .txt{flex:1;min-width:0}
+  .row .txt b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .row .txt span{display:block;font-size:12px;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .icon{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:17px;flex:none}
+  .icon.del{color:var(--red);border-color:rgba(168,57,43,.4)}
+  .icons{display:flex;gap:6px;flex:none}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(246,241,230,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+  .bar .in{max-width:680px;margin:0 auto}
+  .status{font-size:13px;text-align:center;margin-bottom:8px;color:var(--soft);min-height:18px}
+  .status.ok{color:var(--green);font-weight:600}
+  .status.err{color:var(--red);font-weight:600}
+
+  .sheet-bg{position:fixed;inset:0;z-index:50;background:rgba(15,28,45,.55);display:flex;align-items:flex-end;justify-content:center}
+  .sheet{width:100%;max-width:520px;background:var(--paper);border-radius:20px 20px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));display:grid;gap:10px;animation:up .25s ease-out}
+  .sheet img{width:96px;aspect-ratio:3/4;object-fit:cover;border-radius:10px;margin:0 auto 4px}
+  @keyframes up{from{transform:translateY(40px);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>着 Admin Yukata Mika</h1>
+  <span><a href="index.html" target="_blank">Lihat situs ↗</a> <button id="logout" hidden>Keluar</button></span>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div class="page" id="loginView" hidden>
+  <div class="card">
+    <h2>Masuk</h2>
+    <p class="muted">Tempel token GitHub Anda. Token hanya disimpan di HP ini, dan cukup dimasukkan satu kali.</p>
+    <form id="loginForm">
+      <label for="token">Token GitHub</label>
+      <input type="password" id="token" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…" required>
+      <p class="status err" id="loginErr" style="text-align:left;margin-top:8px"></p>
+      <button class="btn" id="loginBtn" style="margin-top:6px">Masuk</button>
+    </form>
+    <details>
+      <summary>Belum punya token? Cara membuatnya (sekali saja, ±2 menit)</summary>
+      <ol>
+        <li>Login ke GitHub dengan akun <b>yukata-mika</b>, lalu buka <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">halaman buat token ↗</a></li>
+        <li><b>Token name</b>: isi bebas, misalnya <code>Admin HP</code></li>
+        <li><b>Expiration</b>: pilih yang paling lama</li>
+        <li><b>Repository access</b> → <b>Only select repositories</b> → pilih <code>yukata-mika</code></li>
+        <li><b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b> → <b>Read and write</b></li>
+        <li>Tekan <b>Generate token</b>, salin tokennya, lalu tempel di kolom di atas</li>
+      </ol>
+      <p class="muted" style="margin-top:10px">Jangan bagikan token ke siapa pun. Kalau HP hilang, hapus token di halaman GitHub yang sama.</p>
+    </details>
+  </div>
+</div>
+
+<!-- ============ ADMIN ============ -->
+<div class="page" id="appView" hidden>
+  <div class="tabs">
+    <button class="tab active" data-tab="foto">Foto <small id="nFoto"></small></button>
+    <button class="tab" data-tab="video">Video <small id="nVideo"></small></button>
+    <button class="tab" data-tab="link">Link <small id="nLink"></small></button>
+    <button class="tab" data-tab="ulasan">Ulasan <small id="nUlasan"></small></button>
+  </div>
+
+  <!-- FOTO -->
+  <div id="tab-foto">
+    <div class="card">
+      <h2>Tambah foto</h2>
+      <p class="muted">1. Pilih jenisnya &nbsp;2. Pilih foto dari galeri HP (boleh banyak sekaligus)</p>
+      <div class="seg" id="catSeg">
+        <button data-cat="kimono" class="active">Kimono</button>
+        <button data-cat="yukata">Yukata</button>
+      </div>
+      <button class="btn big" id="pickBtn">＋ Pilih Foto</button>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="card">
+      <h2>Semua foto</h2>
+      <p class="muted" style="margin-bottom:12px">Ketuk foto untuk menghapus, mengganti jenis, atau memindahkan ke urutan pertama.</p>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div id="tab-video" hidden>
+    <div class="card">
+      <h2>Tambah video</h2>
+      <p class="muted">Tempel link YouTube (atau Instagram / TikTok). Gambar sampul YouTube muncul otomatis.</p>
+      <form id="videoForm">
+        <label for="vUrl">Link video</label>
+        <input type="url" id="vUrl" inputmode="url" placeholder="https://youtu.be/…" required>
+        <label for="vId">Judul (Indonesia)</label>
+        <input type="text" id="vId" placeholder="Pemakaian Yukata" required>
+        <label for="vEn">Judul (English) — boleh kosong</label>
+        <input type="text" id="vEn" placeholder="How to Wear Yukata">
+        <button class="btn" style="margin-top:16px">＋ Tambah Video</button>
+      </form>
+    </div>
+    <div class="card"><h2>Daftar video</h2><div id="vlist"></div></div>
+  </div>
+
+  <!-- LINK -->
+  <div id="tab-link" hidden>
+    <div class="card">
+      <h2>Tambah link</h2>
+      <p class="muted">Link tampil sebagai tombol di bagian Kontak (misalnya Instagram, TikTok, Shopee).</p>
+      <form id="linkForm">
+        <label for="lUrl">Alamat link</label>
+        <input type="url" id="lUrl" inputmode="url" placeholder="https://…" required>
+        <label for="lId">Tulisan tombol</label>
+        <input type="text" id="lId" placeholder="TikTok @yukatamika" required>
+        <label for="lEn">Tulisan tombol (English) — boleh kosong</label>
+        <input type="text" id="lEn">
+        <button class="btn" style="margin-top:16px">＋ Tambah Link</button>
+      </form>
+    </div>
+    <div class="card"><h2>Daftar link</h2><div id="llist"></div></div>
+  </div>
+
+  <!-- ULASAN -->
+  <div id="tab-ulasan" hidden>
+    <div class="card">
+      <h2>Tambah ulasan</h2>
+      <p class="muted">Buka ulasan di Google, salin nama dan isi ulasannya, lalu tempel di sini. <a href="https://share.google/zoTZ28BqwXMeD2eL4" target="_blank" rel="noopener" style="color:var(--indigo);font-weight:600">Buka ulasan Google ↗</a></p>
+      <form id="reviewForm">
+        <label for="rName">Nama pelanggan</label>
+        <input type="text" id="rName" required maxlength="60">
+        <label>Bintang</label>
+        <div class="starpick" id="starpick"><button type="button" data-s="1">★</button><button type="button" data-s="2">★</button><button type="button" data-s="3">★</button><button type="button" data-s="4">★</button><button type="button" data-s="5">★</button></div>
+        <label for="rText">Isi ulasan</label>
+        <textarea id="rText" required maxlength="600"></textarea>
+        <button class="btn" style="margin-top:16px">＋ Tambah Ulasan</button>
+      </form>
+    </div>
+    <div class="card"><h2>Daftar ulasan</h2><div id="rlist"></div></div>
+  </div>
+</div>
+
+<div class="bar" id="bar" hidden><div class="in">
+  <div class="status" id="status"></div>
+  <button class="btn gold" id="publish" disabled>Belum ada perubahan</button>
+</div></div>
+
+<div class="sheet-bg" id="sheet" hidden><div class="sheet">
+  <img id="sImg" alt="">
+  <button class="btn ghost" id="sCat"></button>
+  <button class="btn ghost" id="sFirst">⇤ Jadikan urutan pertama</button>
+  <button class="btn danger" id="sDel">🗑 Hapus foto ini</button>
+  <button class="btn" id="sCancel">Batal</button>
+</div></div>
+
+<script>
+(() => {
+  const REPO = 'yukata-mika/yukata-mika', BRANCH = 'main', KEY = 'ym_admin_token';
+  const MAX_SIDE = 1600, JPEG_Q = 0.82;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const store = { get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }, set(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} } };
+
+  let token = store.get();
+  let data = { photos: [], videos: [], links: [], reviews: [] };
+  let removed = [];          // path file foto lama yang dihapus
+  let dirty = 0, busy = false, cat = 'kimono';
+
+  /* ---------- GitHub API ---------- */
+  async function gh(path, opt = {}) {
+    const r = await fetch('https://api.github.com/repos/' + REPO + path, {
+      method: opt.method || 'GET',
+      headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opt.body ? { 'Content-Type': 'application/json' } : {}) },
+      body: opt.body ? JSON.stringify(opt.body) : undefined, cache: 'no-store'
+    });
+    if (!r.ok) { const j = await r.json().catch(() => ({})); const e = new Error(j.message || ('HTTP ' + r.status)); e.status = r.status; throw e; }
+    return r.status === 204 ? null : r.json();
+  }
+  const explain = e => e.status === 401 ? 'Token salah atau sudah kedaluwarsa. Silakan masuk lagi dengan token baru.'
+    : e.status === 403 ? 'Token tidak punya izin menulis. Pastikan izin Contents = Read and write.'
+    : e.status === 404 ? 'Repository tidak ditemukan oleh token ini. Pastikan token dibuat untuk repository yukata-mika.'
+    : e.status === 409 || e.status === 422 ? 'Ada perubahan lain yang baru masuk. Muat ulang halaman lalu coba lagi.'
+    : !navigator.onLine ? 'Tidak ada koneksi internet.' : 'Gagal: ' + e.message;
+
+  async function loadData() {
+    try {
+      const f = await gh('/contents/data.json?ref=' + BRANCH);
+      const bytes = Uint8Array.from(atob(f.content.replace(/\s/g, '')), c => c.charCodeAt(0));
+      data = JSON.parse(new TextDecoder().decode(bytes));
+    } catch (e) {
+      if (e.status !== 404) throw e;
+      data = await fetch('data.json?v=' + Date.now()).then(r => r.json()).catch(() => ({}));
+    }
+    data.photos = data.photos || []; data.videos = data.videos || []; data.links = data.links || []; data.reviews = data.reviews || [];
+  }
+
+  /* ---------- login ---------- */
+  async function start() {
+    if (!token) return show('login');
+    setStatus('Memuat data…');
+    show('app');
+    try { await loadData(); setStatus(''); renderAll(); }
+    catch (e) {
+      if (e.status === 401 || e.status === 403 || e.status === 404) { store.set(null); token = null; show('login'); $('#loginErr').textContent = explain(e); }
+      else setStatus(explain(e), 'err');
+    }
+  }
+  function show(v) {
+    $('#loginView').hidden = v !== 'login'; $('#appView').hidden = v !== 'app';
+    $('#bar').hidden = v !== 'app'; $('#logout').hidden = v !== 'app';
+  }
+  $('#loginForm').onsubmit = async e => {
+    e.preventDefault();
+    const t = $('#token').value.trim(); if (!t) return;
+    $('#loginBtn').disabled = true; $('#loginBtn').textContent = 'Memeriksa…'; $('#loginErr').textContent = '';
+    token = t;
+    try { await gh(''); store.set(t); $('#token').value = ''; await start(); }
+    catch (err) { token = null; $('#loginErr').textContent = explain(err); }
+    $('#loginBtn').disabled = false; $('#loginBtn').textContent = 'Masuk';
+  };
+  $('#logout').onclick = () => {
+    if (dirty && !confirm('Ada perubahan yang belum diterbitkan. Tetap keluar?')) return;
+    store.set(null); token = null; dirty = 0; show('login');
+  };
+
+  /* ---------- tampilan ---------- */
+  function setStatus(msg, kind) { const s = $('#status'); s.textContent = msg || ''; s.className = 'status' + (kind ? ' ' + kind : ''); }
+  function touch() { dirty++; updateBar(); }
+  function updateBar() {
+    const b = $('#publish');
+    b.disabled = !dirty || busy;
+    b.textContent = busy ? 'Menerbitkan…' : dirty ? 'Simpan & Terbitkan ke Situs' : 'Belum ada perubahan';
+    if (dirty && !busy) setStatus('Ada perubahan yang belum diterbitkan');
+  }
+  $$('.tab').forEach(t => t.onclick = () => {
+    $$('.tab').forEach(x => x.classList.toggle('active', x === t));
+    ['foto', 'video', 'link', 'ulasan'].forEach(n => $('#tab-' + n).hidden = n !== t.dataset.tab);
+    scrollTo({ top: 0 });
+  });
+  function renderAll() {
+    $('#nFoto').textContent = `(${data.photos.length})`; $('#nVideo').textContent = `(${data.videos.length})`; $('#nLink').textContent = `(${data.links.length})`; $('#nUlasan').textContent = `(${data.reviews.length})`;
+    renderPhotos(); renderVideos(); renderLinks(); renderReviews(); updateBar();
+  }
+
+  /* ---------- foto ---------- */
+  $$('#catSeg button').forEach(b => b.onclick = () => { cat = b.dataset.cat; $$('#catSeg button').forEach(x => x.classList.toggle('active', x === b)); });
+  $('#pickBtn').onclick = () => $('#file').click();
+
+  function compress(file) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => {
+        const k = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b => b ? res(b) : rej(new Error('Gagal memproses foto')), 'image/jpeg', JPEG_Q);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Format foto tidak didukung: ' + file.name)); };
+      img.src = url;
+    });
+  }
+  const toB64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
+
+  $('#file').onchange = async e => {
+    const files = [...e.target.files]; e.target.value = '';
+    if (!files.length) return;
+    const stamp = Date.now().toString(36); let ok = 0, fail = 0;
+    for (let i = 0; i < files.length; i++) {
+      setStatus(`Menyiapkan foto ${i + 1} dari ${files.length}…`);
+      try {
+        const blob = await compress(files[i]);
+        data.photos.unshift({ src: `foto/${cat}-${stamp}-${i + 1}.jpg`, cat, _blob: blob, _preview: URL.createObjectURL(blob) });
+        ok++;
+      } catch (err) { fail++; }
+    }
+    if (ok) touch();
+    renderAll();
+    if (fail) setStatus(`${fail} foto gagal diproses dan dilewati`, 'err');
+  };
+
+  function renderPhotos() {
+    $('#pgrid').innerHTML = data.photos.map((p, i) =>
+      `<button class="pitem ${p.cat === 'yukata' ? 'yukata' : ''} ${p._blob ? 'new' : ''}" data-i="${i}"><span class="t">${p.cat === 'yukata' ? 'Yukata' : 'Kimono'}</span><img loading="lazy" src="${esc(p._preview || p.src)}" alt=""></button>`).join('')
+      || '<p class="muted">Belum ada foto.</p>';
+  }
+  let sel = -1;
+  $('#pgrid').onclick = e => {
+    const b = e.target.closest('.pitem'); if (!b) return;
+    sel = +b.dataset.i; const p = data.photos[sel];
+    $('#sImg').src = p._preview || p.src;
+    $('#sCat').textContent = '⇄ Ubah jadi ' + (p.cat === 'yukata' ? 'Kimono' : 'Yukata');
+    $('#sheet').hidden = false;
+  };
+  const closeSheet = () => { $('#sheet').hidden = true; sel = -1; };
+  $('#sCancel').onclick = closeSheet;
+  $('#sheet').onclick = e => { if (e.target.id === 'sheet') closeSheet(); };
+  $('#sCat').onclick = () => { const p = data.photos[sel]; p.cat = p.cat === 'yukata' ? 'kimono' : 'yukata'; touch(); closeSheet(); renderAll(); };
+  $('#sFirst').onclick = () => { const [p] = data.photos.splice(sel, 1); data.photos.unshift(p); touch(); closeSheet(); renderAll(); };
+  $('#sDel').onclick = () => {
+    const [p] = data.photos.splice(sel, 1);
+    if (p._blob) { URL.revokeObjectURL(p._preview); dirty = Math.max(0, dirty - 1); if (!dirty) setStatus(''); }
+    else { removed.push(p.src); dirty++; }
+    closeSheet(); renderAll();
+  };
+
+  /* ---------- video & link ---------- */
+  const ytId = u => { const m = String(u).match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m ? m[1] : null; };
+  const validUrl = u => { try { return /^https?:$/.test(new URL(u).protocol); } catch (e) { return false; } };
+  function listHtml(arr, kind) {
+    return arr.map((x, i) => {
+      const id = kind === 'v' ? ytId(x.url) : null;
+      const thumb = kind === 'v' ? (id ? `<img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" alt="">` : '<div class="noimg"></div>') : '';
+      return `<div class="row">${thumb}<div class="txt"><b>${esc(kind === 'v' ? x.title_id : kind === 'l' ? x.label_id : '★'.repeat(+x.stars || 5) + ' ' + x.name)}</b><span>${esc(kind === 'r' ? x.text : x.url)}</span></div>
+        <div class="icons"><button class="icon" data-k="${kind}" data-a="up" data-i="${i}" ${i === 0 ? 'disabled' : ''} aria-label="Naikkan">↑</button><button class="icon del" data-k="${kind}" data-a="del" data-i="${i}" aria-label="Hapus">✕</button></div></div>`;
+    }).join('') || '<p class="muted">Belum ada.</p>';
+  }
+  function renderVideos() { $('#vlist').innerHTML = listHtml(data.videos, 'v'); }
+  function renderLinks() { $('#llist').innerHTML = listHtml(data.links, 'l'); }
+  function renderReviews() { $('#rlist').innerHTML = listHtml(data.reviews, 'r'); }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.icon[data-a]'); if (!b) return;
+    const arr = { v: data.videos, l: data.links, r: data.reviews }[b.dataset.k], i = +b.dataset.i;
+    if (b.dataset.a === 'del') { if (!confirm('Hapus dari daftar?')) return; arr.splice(i, 1); }
+    else if (i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+    touch(); renderAll();
+  });
+  $('#videoForm').onsubmit = e => {
+    e.preventDefault();
+    const url = $('#vUrl').value.trim(), tid = $('#vId').value.trim(), ten = $('#vEn').value.trim();
+    if (!validUrl(url)) return alert('Link harus diawali https://');
+    data.videos.push({ url, title_id: tid, title_en: ten || tid });
+    e.target.reset(); touch(); renderAll();
+  };
+  $('#linkForm').onsubmit = e => {
+    e.preventDefault();
+    const url = $('#lUrl').value.trim(), lid = $('#lId').value.trim(), len = $('#lEn').value.trim();
+    if (!validUrl(url)) return alert('Link harus diawali https://');
+    data.links.push({ url, label_id: lid, label_en: len || lid });
+    e.target.reset(); touch(); renderAll();
+  };
+
+  let stars = 5;
+  const paintStars = () => $$('#starpick button').forEach(b => b.classList.toggle('on', +b.dataset.s <= stars));
+  $$('#starpick button').forEach(b => b.onclick = () => { stars = +b.dataset.s; paintStars(); }); paintStars();
+  $('#reviewForm').onsubmit = e => {
+    e.preventDefault();
+    const name = $('#rName').value.trim(), text = $('#rText').value.trim();
+    if (!name || !text) return;
+    data.reviews.unshift({ name, stars, text });
+    e.target.reset(); stars = 5; paintStars(); touch(); renderAll();
+  };
+
+  /* ---------- terbitkan: satu commit berisi semua perubahan ---------- */
+  $('#publish').onclick = async () => {
+    if (busy || !dirty) return;
+    busy = true; updateBar();
+    try {
+      setStatus('Menghubungi GitHub…');
+      const ref = await gh('/git/ref/heads/' + BRANCH);
+      const head = ref.object.sha;
+      const commit = await gh('/git/commits/' + head);
+      const tree = [];
+      const fresh = data.photos.filter(p => p._blob);
+      for (let i = 0; i < fresh.length; i++) {
+        setStatus(`Mengunggah foto ${i + 1} dari ${fresh.length}…`);
+        const blob = await gh('/git/blobs', { method: 'POST', body: { content: await toB64(fresh[i]._blob), encoding: 'base64' } });
+        tree.push({ path: fresh[i].src, mode: '100644', type: 'blob', sha: blob.sha });
+      }
+      if (removed.length) {
+        const cur = await gh('/git/trees/' + commit.tree.sha + '?recursive=1');
+        const have = new Set(cur.tree.map(t => t.path)), still = new Set(data.photos.map(p => p.src));
+        removed.filter(p => have.has(p) && !still.has(p)).forEach(p => tree.push({ path: p, mode: '100644', type: 'blob', sha: null }));
+      }
+      const clean = { photos: data.photos.map(({ src, cat, alt }) => alt ? { src, cat, alt } : { src, cat }), videos: data.videos, links: data.links, reviews: data.reviews };
+      tree.push({ path: 'data.json', mode: '100644', type: 'blob', content: JSON.stringify(clean, null, 1) + '\n' });
+      setStatus('Menyimpan…');
+      const nt = await gh('/git/trees', { method: 'POST', body: { base_tree: commit.tree.sha, tree } });
+      const nc = await gh('/git/commits', { method: 'POST', body: { message: 'Perbarui konten lewat halaman admin', tree: nt.sha, parents: [head] } });
+      await gh('/git/refs/heads/' + BRANCH, { method: 'PATCH', body: { sha: nc.sha } });
+      fresh.forEach(p => { delete p._blob; });   // _preview tetap dipakai sampai situs selesai diperbarui
+      removed = []; dirty = 0; busy = false; renderAll();
+      setStatus('✓ Berhasil diterbitkan. Situs diperbarui dalam ±1–2 menit.', 'ok');
+    } catch (e) {
+      busy = false; updateBar(); setStatus(explain(e), 'err');
+    }
+  };
+  addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+  start();
+})();
+</script>
+</body>
+</html>

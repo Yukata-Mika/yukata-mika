@@ -1,0 +1,214 @@
+{
+ "photos": [
+  {
+   "src": "kimono1.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono2.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono3.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono4.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono5.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono7.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono8.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono9.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono10.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono11.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono12.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono13.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono14.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono15.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono16.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono17.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono18.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono19.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono20.jpg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono21.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono22.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono23.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "yukata1.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata2.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata3.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata4.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata5.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata6.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata8.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata9.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata10.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata12.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata13.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata14.JPG",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata16.JPG",
+   "cat": "yukata"
+  },
+  {
+   "src": "yukata17.jpeg",
+   "cat": "yukata"
+  },
+  {
+   "src": "kimono24.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono25.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono26.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono27.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono28.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono29.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono30.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "kimono31.jpeg",
+   "cat": "kimono"
+  },
+  {
+   "src": "yukata18.jpeg",
+   "cat": "yukata"
+  }
+ ],
+ "videos": [
+  {
+   "url": "https://youtu.be/PJXeHtg9ZIo",
+   "title_id": "Pemakaian Yukata",
+   "title_en": "How to Wear Yukata"
+  },
+  {
+   "url": "https://youtu.be/HflcC2tztPc",
+   "title_id": "Pemakaian Obi",
+   "title_en": "How to Tie Obi"
+  },
+  {
+   "url": "https://youtu.be/lD1A1JE2iDE",
+   "title_id": "Pemakaian Kimono Formal",
+   "title_en": "How to Wear Formal Kimono"
+  },
+  {
+   "url": "https://youtu.be/xU-SxteQr7g",
+   "title_id": "Kimono Pria",
+   "title_en": "Men's Kimono"
+  }
+ ],
+ "links": [
+  {
+   "url": "https://www.instagram.com/yukatamikastudio",
+   "label_id": "Instagram @yukatamikastudio",
+   "label_en": "Instagram @yukatamikastudio"
+  }
+ ],
+ "reviews": []
+}
